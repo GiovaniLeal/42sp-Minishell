@@ -12,22 +12,22 @@
 
 #include "minishell.h"
 
-t_token	lexer(char *str)
+t_token	*lexer(char *str)
 {
-	
+
 }
 
-int	main(int arc, char **argv)
+int	main(void)
 {
-	int	str;
+	char	*line
+	t_token	*tokens;
 
-	str = 0;
-	t_token	*token_node;
-	t_token	*token_lst;
-	while (argv[str])
+	while (1)
 	{
-		token_node = lexer(argv[str]);
-		ft_lstadd_back_bonus(token_lst, token_node);
+		line = readline("minishell$ ");
+		if (!line)
+			break;
+		tokens = lexer(str);
 		str++;
 	}
 	return (0); //isso ainda irá mudar, vamos deixar assim por hora.
