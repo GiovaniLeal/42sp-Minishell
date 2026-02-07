@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdlib.h>
 #include <readline/readline.h>
 
 /* ************************************************************************** */
@@ -34,7 +35,7 @@ typedef enum e_token_type
 	T_HEREDOC
 }	t_token_type;
 
-/* 	Armazenamos todos os comandos recebidos na struct abaixo	        */
+/* Armazenamos todos os comandos recebidos na struct abaixo em lista        */
 typedef struct s_token
 { 
 	char		*value;
@@ -52,3 +53,10 @@ typedef enum e_state
 	STATE_IN_SQUOTE,
 	STATE_IN_DQOTE
 }	t_state;
+
+
+
+int	main(void);
+/* lexer.c --------------------------------*/
+t_token	*lexer(char *str);
+int	get_token_type_and_len(t_token_type *node_type, char *str);

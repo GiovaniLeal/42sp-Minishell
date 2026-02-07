@@ -31,6 +31,7 @@ INCLUDES    := -I$(INC_DIR) -I$(LIBFT_INC)
 #                                   SOURCES                                    #
 # **************************************************************************** #
 SRC :=  main.c \
+	lexer.c
 
 SRCS := $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS := $(SRCS:.c=.o)
