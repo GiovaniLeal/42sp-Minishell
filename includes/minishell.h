@@ -60,11 +60,9 @@
 // }	t_state;
 
 
-int	main(void);
+// int	main(void);
 /* lexer.c --------------------------------*/
 t_token	*lexer(char *str);
 int	get_token_type_and_len(t_token_type *node_type, char *str);
-
-void	free_split(char **array);
 
 #endif

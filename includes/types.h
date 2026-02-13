@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:13:17 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/02/12 14:22:33 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/02/13 14:48:55 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
-	s_token			*next;	
+	s_token			*next
 }	t_token;
 
 

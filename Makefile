@@ -31,7 +31,11 @@ INCLUDES    := -I$(INC_DIR) -I$(LIBFT_INC)
 #                                   SOURCES                                    #
 # **************************************************************************** #
 SRC :=  main.c \
-	lexer.c
+	lexer.c	\
+	free.c	\
+	execution/path.c	\
+	execution/exec.c
+
 
 SRCS := $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS := $(SRCS:.c=.o)

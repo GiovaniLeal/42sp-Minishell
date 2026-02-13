@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execution.h                                        :+:      :+:    :+:   */
+/*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/12 14:21:32 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/02/13 14:24:04 by anunes-o         ###   ########.fr       */
+/*   Created: 2026/02/13 14:57:33 by anunes-o          #+#    #+#             */
+/*   Updated: 2026/02/13 16:19:08 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef EXECUTION_H
-# define EXECUTION_H
+#include "minishell.h"
 
-# include "minishell.h"
-# include <unistd.h>
-# include <sys/types.h>
-# include <sys/wait.h>
-
-char	*check_absolute_path(char *cmd);
-char	*search_in_dir(char	**dirs, char *cmd);
-void	free_split(char **array);
-char	*find_in_path(char	*cmd);
-
-#endif
+int	exec_simple(char **argv, char **envp)
+{
+	char	*found;
+	found = find_in_path(argv[1]);
+	if (found)
+		execve(found, &argv[1], envp);
+	fork();
+}
