@@ -12,20 +12,43 @@
 
 #include "minishell.h"
 
-/*
-Incluir nessa etapa : 
-	Funcao -> add_back_token_lst
-	1 - Teste simples : ls -l | grep txt
-	2 - Incluir suporte a aspas
-	3 - Validar erros de sintaxe (||| , | |, l1s )
-*/
+
+/* Atribui tipo T_WORD E retorna o tamanho da str. Verifica o status de aspas 
+simples e duplas e caso nao seja fechado corretamente retorna -1*/
+static int read_word(t_token_type *type, char *str)
+{
+    int len = 0;
+    t_state state = STATE_GENERAL;
+    t_state next;
+
+    *type = T_WORD;
+    while (str[len])
+    {
+        if (state == STATE_GENERAL &&
+            (is_operator(str[len]) || is_white_space(str[len])))
+            break;
+
+        next = state_status(str[len]);
+
+        if (state == STATE_GENERAL && next != STATE_GENERAL)
+            state = next;
+        else if (state != STATE_GENERAL && next == state)
+            state = STATE_GENERAL;
+
+        len++;
+    }
+
+    if (state != STATE_GENERAL)
+        return (-1);
+    return (len);
+}
+
+
+
 /*    Atribui a o o type do nó correspondente e retorna o tamanho da str a 
 ser armazenada em value   */
-int	get_token_type_and_len(t_token_type *node_type, char *str)
+static int	get_token_type_and_len(t_token_type *node_type, char *str)
 {
-	int	len;
-
-	len = 0;
 	if (str[0] == '>' && str[1] == '>')
 		return (*node_type = T_APPEND, 2);
 	if (str[0] == '<' && str[1] == '<')
@@ -37,14 +60,7 @@ int	get_token_type_and_len(t_token_type *node_type, char *str)
 	if (str[0] == '|')
 		return (*node_type = T_PIPE, 1);
 	else
-	{
-		*node_type = T_WORD;
-		while (str[len] && str[len] != ' ' && str[len] != '\t'
-			&& str[len] != '|' && str[len] != '<'
-			&& str[len] != '>')
-			len++;
-		return (len);
-	}
+		return (read_word(node_type, str));
 }
 
 /* Cria e retorna lista com tokens(comandos) digitados pelo usuário */
@@ -65,10 +81,21 @@ t_token	*lexer(char *str)
 		if (!new_token)
 			return (NULL);
 		new_token->next = NULL;
-		value_len = get_token_type_and_len(&new_node->type, str);
-		new_node->value = ft_substr(str, 0, value_len);
-		add_back_token_lst(&lst, new_token);
+		value_len = get_token_type_and_len(&new_token->type, str);
+		if (value_len <= 0)
+		{
+			free(new_token);
+			return (NULL);
+		}
+		new_token->value = ft_substr(str, 0, value_len);
+		if (!new_token->value)
+		{
+			free(new_token);
+			return (NULL);
+		}
+		add_back_token_lst(&lst_tokens, new_token);
 		str += value_len;
 	}
 	return (lst_tokens);
 }
+

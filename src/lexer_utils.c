@@ -10,12 +10,23 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.c"
+#include "minishell.h"
+
+/* Retorna o enum correspondente*/
+int	state_status(char c)
+{
+	if (c == '\'')
+		return (STATE_IN_SQUOTE);
+	else if (c == '"')
+		return (STATE_IN_DQUOTE);
+	else
+		return (STATE_GENERAL);
+}
 
 /* Valida se o caractere é um operador unix */
 int	is_operator(char c)
 {
-	if (c == '>' || c== '<' || c == |)
+	if (c == '>' || c== '<' || c == '|')
 		return (1);
 	return (0);
 }

@@ -24,7 +24,7 @@ typedef enum e_state
 {
 	STATE_GENERAL,
 	STATE_IN_SQUOTE,
-	STATE_IN_DQOTE
+	STATE_IN_DQUOTE
 }	t_state;
 /* 							        */
 /*   Esse enum representa os operadores(tokens) esperados do nosso shell.     */
@@ -64,9 +64,10 @@ int	main(void);
 
 /* lexer.c ---------------------------------------------*/
 t_token	*lexer(char *str);
-void	free_token_list(t_token *token_list);
+
 
 /* lexer_utils.c ---------------------------------------------*/
+int	state_status(char c);
 int	is_operator(char c);
 int	is_white_space(char c);
 void	free_token_list(t_token *token_list);

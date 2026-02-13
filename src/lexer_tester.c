@@ -41,7 +41,6 @@ void	print_tokens(t_token  *tokens_list)
 	count_node = 0;
 	while(tokens_list != NULL)
 	{
-		//ft_printf(" %d", count_node);
 		ft_printf(" - VALUE : %s\n", tokens_list->value);
 		ft_printf(" - TYPE : %s\n", token_type_to_str(tokens_list->type));
 		tokens_list = tokens_list->next;
