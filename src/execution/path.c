@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:23:11 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/02/13 14:46:37 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/02/19 15:54:35 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,10 @@ char	*search_in_dir(char	**dirs, char *cmd)
 		path_candidate = ft_strjoin(temp, cmd);
 		free(temp);
 		if (access(path_candidate, X_OK) == 0)
+		{
+			free_split(dirs);
 			return (path_candidate);
+		}
 		free(path_candidate);
 		i++;
 	}
@@ -68,24 +71,17 @@ char	*search_in_dir(char	**dirs, char *cmd)
 	return (NULL);
 }
 
+// solo para testes S2
 int	main(int argc, char **argv, char **envp)
 {
-	char	*path;
-	int		i;
+	int		exit_code;
 
 	if (argc < 2)
 	{
-		printf("Usage: %s <command> [args...]\n", argv[1]);
-		return (1);
-	}
-	path = find_in_path(argv[1]);
-	if (!path)
-	{
-		perror("Command not found");
+		printf("Usage: %s <command> [args...]\n", argv[0]);
 		return (1);
 	}
 	printf("Executing %s ...\n", argv[1]);
-	execve(path, &argv[1], envp);
-	perror("execve failed");
-	return (1);
+	exit_code = exec_simple(&argv[1], envp);
+	return (exit_code);
 }
