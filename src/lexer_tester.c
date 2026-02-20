@@ -14,6 +14,7 @@
 
 
 /* !! - APAGAR ESSE ARQUIVO ANTES DO ENVIO - ARQUIVO DE TESTE DO LEXER!! - */
+/* valgrind --leak-check=full --show-leak-kinds=all ./minishell*/
 
 /*  Funcao auxiliar para tester de vizualização de lista de tokens criadas       */
 char	*token_type_to_str(t_token_type type)

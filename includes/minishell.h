@@ -14,6 +14,7 @@
 #include "ft_printf.h"
 #include <stdlib.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 
 /* ************************************************************************** */
 /*  		     TOKEN PART - ENUM AND LIST	        	        */
