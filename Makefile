@@ -34,6 +34,8 @@ SRC :=  main.c \
 	lexer.c \
 	lexer_utils.c \
 	lexer_tester.c # ! ESSE ARQUIVO DEVE SER APAGADO NA REVISAO FINAL ! #
+	parsing.c \
+	parsing_utils.c
 
 SRCS := $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS := $(SRCS:.c=.o)

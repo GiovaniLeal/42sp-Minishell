@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+/* Roteiro : 
+	- Iniciar variavel global que armazena token lst && parser lst
+	- Criar funcao de limpeza geral
+	- Parser inicial 
+*/
+
+
 /* ************************************************************************** */
 /* 		          	MAIN                                  */
 /* ************************************************************************** */
@@ -19,21 +26,28 @@ int	main(void)
 {
 	char	*input;
 	t_token	*tokens;
+	t_ast	*parser_tree;
 
 	using_history();
 	while (1)
 	{
-		input = readline("minishell$ ");
-		add_history(input);
+		input = readline(PROMPT);
 		if (!input)
 			break;
+		if (*input)
+			add_history(input);
 		tokens = lexer(input);
 		if (!tokens)
 		{
 			free(input);
 			continue;
 		}
+		parser_tree = parser(tokens);
+		//execute();
+		printf("========= LEXER LIST ==========");
 		print_tokens(tokens);
+		printf("========= PARSER ============");
+
 		free_token_list(tokens);
 		free(input);
 	}
