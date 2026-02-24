@@ -31,11 +31,13 @@ INCLUDES    := -I$(INC_DIR) -I$(LIBFT_INC)
 #                                   SOURCES                                    #
 # **************************************************************************** #
 SRC :=  main.c \
-	lexer.c	\
 	free.c	\
 	execution/path.c	\
-	execution/exec.c
-
+	execution/exec.c	\
+	
+	lexer.c \
+	lexer_utils.c \
+	lexer_tester.c # ! ESSE ARQUIVO DEVE SER APAGADO NA REVISAO FINAL ! #
 
 SRCS := $(addprefix $(SRC_DIR)/, $(SRC))
 OBJS := $(SRCS:.c=.o)
@@ -46,7 +48,7 @@ OBJS := $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -lncurses -o $(NAME)
 
 $(SRC_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@

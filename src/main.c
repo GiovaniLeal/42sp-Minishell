@@ -12,18 +12,30 @@
 
 #include "minishell.h"
 
-// int	main(void)
-// {
-// 	char	*line
-// 	t_token	*tokens;
+/* ************************************************************************** */
+/* 		          	MAIN                                  */
+/* ************************************************************************** */
+int	main(void)
+{
+	char	*line;
+	t_token	*tokens;
 
-// 	while (1)
-// 	{
-// 		line = readline("minishell$ ");
-// 		if (!line)
-// 			break;
-// 		tokens = lexer(str);
-// 		str++;
-// 	}
-// 	return (0); //isso ainda irá mudar, vamos deixar assim por hora.
-// }
+	while (1)
+	{
+		line = readline("minishell$ ");
+		if (!line)
+			break;
+		tokens = lexer(line);
+		if (!tokens)
+		{
+			free(line);
+			continue;
+		}
+		print_tokens(tokens);
+		free_token_list(tokens);
+		free(line);
+	}
+	rl_clear_history();
+	return (0); 
+}
+

@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 14:57:33 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/02/19 16:13:25 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/02/20 15:30:45 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,11 @@ int	exec_simple(char **argv, char **envp)
 		return (-1);
 	}
 	if (pid == 0)
+	{
+		if (apply_redirections(argv) < 0)
+			exit (1);
 		execute_child(path_to_exec, argv, envp);
+	}
 	free(path_to_exec);
 	waitpid(pid, &status, 0);
 	return (exit_status(status));
