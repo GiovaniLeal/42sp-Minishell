@@ -15,7 +15,6 @@
 #include <stdlib.h>
 #include <readline/readline.h>
 #include "execution.h"
-#include "types.h"
 
 /* ************************************************************************** */
 /*  		     TOKEN PART - ENUM AND LIST	        	        */
@@ -56,12 +55,6 @@ typedef struct s_token
 
 
 // /* ************************************************************************** */
-
-
-
-
-
-
 int	main(void);
 
 /* lexer.c ---------------------------------------------*/

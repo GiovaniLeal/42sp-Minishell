@@ -34,7 +34,6 @@ SRC :=  main.c \
 	free.c	\
 	execution/path.c	\
 	execution/exec.c	\
-	
 	lexer.c \
 	lexer_utils.c \
 	lexer_tester.c # ! ESSE ARQUIVO DEVE SER APAGADO NA REVISAO FINAL ! #

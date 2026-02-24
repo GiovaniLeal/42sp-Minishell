@@ -6,14 +6,14 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:13:17 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/02/19 16:05:35 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/02/24 14:40:25 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TYPES_H
 # define TYPES_H
 
-# include "minishell.h"
+// # include "minishell.h"
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/wait.h>
