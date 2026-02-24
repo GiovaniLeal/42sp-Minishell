@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:21:32 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/02/19 16:06:48 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/02/24 15:47:27 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,15 @@
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <errno.h>
+# include <fcntl.h>
+# include <stdio.h>
+
+typedef struct s_redir
+{
+	t_token_type	type;
+	char			*target;
+	struct s_redir	*next;
+}	t_redir;
 
 
 char	*check_absolute_path(char *cmd);
