@@ -6,36 +6,14 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:23:11 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/02/19 15:54:35 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/02/25 15:06:00 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Quando o execve precisar buscar o executável path vai achar o caminho
-e o diretório em que o comando especifico se encontra */
-/* vai localizar o comando antes de executa-lo*/
-char	*find_in_path(char	*cmd)
-{
-	char	*path;
-	char	**dirs;
-	char	*result;
-
-	result = check_absolute_path(cmd);
-	if (result)
-		return (result);
-	path = getenv("PATH");
-	if (!path)
-		return (NULL);
-	dirs = ft_split(path, ':');
-	if (!dirs)
-		return (NULL);
-	result = search_in_dir(dirs, cmd);
-	return (result);
-}
-
 /* Se o comando ja tem uma barra (/) ele é um caminho absoluto ou relativo */
-char	*check_absolute_path(char *cmd)
+static char	*check_absolute_path(char *cmd)
 {
 	if (ft_strchr(cmd, '/'))
 	{
@@ -47,7 +25,7 @@ char	*check_absolute_path(char *cmd)
 }
 
 /* vai procurar o comando dentro dos diretórios e testar sua execução */
-char	*search_in_dir(char	**dirs, char *cmd)
+static char	*search_in_dir(char	**dirs, char *cmd)
 {
 	char	*temp;
 	char	*path_candidate;
@@ -71,17 +49,24 @@ char	*search_in_dir(char	**dirs, char *cmd)
 	return (NULL);
 }
 
-// solo para testes S2
-int	main(int argc, char **argv, char **envp)
+/* Quando o execve precisar buscar o executável path vai achar o caminho
+e o diretório em que o comando especifico se encontra */
+/* vai localizar o comando antes de executa-lo*/
+char	*find_in_path(char	*cmd)
 {
-	int		exit_code;
+	char	*path;
+	char	**dirs;
+	char	*result;
 
-	if (argc < 2)
-	{
-		printf("Usage: %s <command> [args...]\n", argv[0]);
-		return (1);
-	}
-	printf("Executing %s ...\n", argv[1]);
-	exit_code = exec_simple(&argv[1], envp);
-	return (exit_code);
+	result = check_absolute_path(cmd);
+	if (result)
+		return (result);
+	path = getenv("PATH");
+	if (!path)
+		return (NULL);
+	dirs = ft_split(path, ':');
+	if (!dirs)
+		return (NULL);
+	result = search_in_dir(dirs, cmd);
+	return (result);
 }

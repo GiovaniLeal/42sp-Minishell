@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-
 /* !! - APAGAR ESSE ARQUIVO ANTES DO ENVIO - ARQUIVO DE TESTE DO LEXER!! - */
+/* valgrind --leak-check=full --show-leak-kinds=all ./minishell*/
 
-/*  Funcao auxiliar para tester de vizualização de lista de tokens criadas       */
+/*  Funcao auxiliar para tester de vizualização de lista de tokens criadas    */
 char	*token_type_to_str(t_token_type type)
 {
 	if (type == T_WORD)
@@ -34,12 +34,12 @@ char	*token_type_to_str(t_token_type type)
 }
 
 /*             Tester para vizualizar lista de tokens criadas                */
-void	print_tokens(t_token  *tokens_list)
+void	print_tokens(t_token *tokens_list)
 {
 	int	count_node;
 
 	count_node = 0;
-	while(tokens_list != NULL)
+	while (tokens_list != NULL)
 	{
 		ft_printf(" - VALUE : %s\n", tokens_list->value);
 		ft_printf(" - TYPE : %s\n", token_type_to_str(tokens_list->type));
