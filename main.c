@@ -12,12 +12,40 @@
 
 #include "minishell.h"
 
-/* Roteiro : 
-	- Iniciar variavel global que armazena token lst && parser lst
-	- Criar funcao de limpeza geral
-	- Parser inicial 
-*/
+static void	process_input(char *input)
+{
+	t_token	*tokens;
+	t_ast	*parser_tree;
 
+	tokens = lexer(input);
+	if (!tokens)
+		return ;
+	parser_tree = parser(tokens);
+	if (!parser_tree)
+	{
+		ft_printf("Syntax error\n");
+		free_token_list(tokens);
+		return ;
+	}
+	printf("========= LEXER LIST ==========\n");
+	print_tokens(tokens);
+	printf("========= PARSER ============\n");
+	print_ast_tree(parser_tree, 0);
+	free_ast(parser_tree);
+	free_token_list(tokens);
+}
+
+static char	*read_input(void)
+{
+	char	*input;
+
+	input = readline(PROMPT);
+	if (!input)
+		return (NULL);
+	if (*input)
+		add_history(input);
+	return (input);
+}
 
 /* ************************************************************************** */
 /* 		          	MAIN                                  */
@@ -25,32 +53,16 @@
 int	main(void)
 {
 	char	*input;
-	t_token	*tokens;
-	t_ast	*parser_tree;
 
 	using_history();
 	while (1)
 	{
-		input = readline(PROMPT);
+		input = read_input();
 		if (!input)
-			break;
-		if (*input)
-			add_history(input);
-		tokens = lexer(input);
-		if (!tokens)
-		{
-			free(input);
-			continue;
-		}
-		parser_tree = parser(tokens);
-		//execute();
-		printf("========= LEXER LIST ==========");
-		print_tokens(tokens);
-		printf("========= PARSER ============");
-
-		free_token_list(tokens);
+			break ;
+		process_input(input);
 		free(input);
 	}
 	rl_clear_history();
-	return (0); 
+	return (0);
 }

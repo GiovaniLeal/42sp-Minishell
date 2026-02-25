@@ -9,14 +9,13 @@
 #    Updated: 2026/02/05 17:36:48 by giodos-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
-
 NAME        := minishell
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -O3
 
-SRC_DIR     := src
 INC_DIR     := includes
+LEXER_DIR   := lexer
+PARSING_DIR := parsing
 
 # **************************************************************************** #
 #                                   LIBFT                                      #
@@ -26,45 +25,58 @@ LIBFT_INC   := $(LIBFT_DIR)/includes
 LIBFT       := $(LIBFT_DIR)/libft.a
 INCLUDES    := -I$(INC_DIR) -I$(LIBFT_INC)
 
-
 # **************************************************************************** #
 #                                   SOURCES                                    #
 # **************************************************************************** #
 SRC :=  main.c \
-	lexer.c \
-	lexer_utils.c \
-	lexer_tester.c # ! ESSE ARQUIVO DEVE SER APAGADO NA REVISAO FINAL ! #
-	parsing.c \
-	parsing_utils.c
+	$(LEXER_DIR)/lexer.c \
+	$(LEXER_DIR)/lexer_list.c \
+	$(LEXER_DIR)/lexer_utils.c \
+	$(LEXER_DIR)/lexer_tester.c \
+	$(PARSING_DIR)/parsing.c \
+	$(PARSING_DIR)/parsing_utils.c \
+	$(PARSING_DIR)/parsing_free.c \
+	$(PARSING_DIR)/parsing_tester.c
 
-SRCS := $(addprefix $(SRC_DIR)/, $(SRC))
-OBJS := $(SRCS:.c=.o)
+OBJS := $(SRC:.c=.o)
 
 # **************************************************************************** #
 #                                   RULES                                      #
 # **************************************************************************** #
-all: $(NAME)
+all: banner $(NAME)
+
+banner:
+	@printf "\033[1;34m////////////////////////////////////////////////////////////\n"; \
+	printf "//                                                        //\n"; \
+	printf "//   __  __ ___ _   _ ___ ____  _   _ _____ _     _       //\n"; \
+	printf "//  |  \\/  |_ _| \\ | |_ _/ ___|| | | | ____| |   | |      //\n"; \
+	printf "//  | |\\/| || ||  \\| || |\\___ \\| |_| |  _| | |   | |      //\n"; \
+	printf "//  | |  | || || |\\  || | ___) |  _  | |___| |___| |___   //\n"; \
+	printf "//  |_|  |_|___|_| \\_|___|____/|_| |_|_____|_____|_____|  //\n"; \
+	printf "//                                                        //\n"; \
+	printf "////////////////////////////////////////////////////////////\n"; \
+	printf "\033[0m\n"
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -lncurses -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -lncurses -o $(NAME)
+	@echo "\033[1;32m✅ minishell created successfully!\033[0m"
 
-$(SRC_DIR)/%.o: $(SRC_DIR)/%.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+%.o: %.c
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(LIBFT):
-	$(MAKE) -C $(LIBFT_DIR)
-
+	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
 
 clean:
 	rm -f $(OBJS)
-	$(MAKE) -C $(LIBFT_DIR) clean
-	@echo "\033[1;33m🧹 Objects removed.\033[0m"
+	$(MAKE) -C $(LIBFT_DIR) clean --no-print-directory
+	@echo "\033[1;33mObjects removed.\033[0m"
 
 fclean: clean
 	rm -f $(NAME)
-	$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo "\033[1;31m🗑️  Binary removed.\033[0m"
+	$(MAKE) -C $(LIBFT_DIR) fclean --no-print-directory
+	@echo "\033[1;31mBinary removed.\033[0m"
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re banner

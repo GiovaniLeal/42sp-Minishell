@@ -11,14 +11,14 @@
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
-#define MINISHELL_H
+# define MINISHELL_H
 
-#include "libft.h"
-#include "ft_printf.h"
-#include <stdlib.h>
-#include <readline/readline.h>
-#include <readline/history.h>
-#include "tokens.h"
-#include "parsing.h"
+# include "libft.h"
+# include "ft_printf.h"
+# include <stdlib.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include "tokens.h"
+# include "parsing.h"
 
 #endif

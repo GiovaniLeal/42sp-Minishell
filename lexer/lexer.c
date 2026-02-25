@@ -12,38 +12,34 @@
 
 #include "minishell.h"
 
-
 /* Atribui tipo T_WORD E retorna o tamanho da str. Verifica o status de aspas 
 simples e duplas e caso nao seja fechado corretamente retorna -1*/
-static int read_word(t_token_type *type, char *str)
+static int	read_word(t_token_type *type, char *str)
 {
-    int len = 0;
-    t_state state = STATE_GENERAL;
-    t_state next;
+	int		len;
+	t_state	state;
+	t_state	next;
 
-    *type = T_WORD;
-    while (str[len])
-    {
-        if (state == STATE_GENERAL &&
-            (is_operator(str[len]) || is_white_space(str[len])))
-            break;
-
-        next = state_status(str[len]);
-
-        if (state == STATE_GENERAL && next != STATE_GENERAL)
-            state = next;
-        else if (state != STATE_GENERAL && next == state)
-            state = STATE_GENERAL;
-
-        len++;
-    }
-
-    if (state != STATE_GENERAL)
-        return (-1);
-    return (len);
+	len = 0;
+	state = STATE_GENERAL;
+	*type = T_WORD;
+	while (str[len])
+	{
+		if (state == STATE_GENERAL
+			&& (is_operator(str[len])
+				|| is_white_space(str[len])))
+			break ;
+		next = state_status(str[len]);
+		if (state == STATE_GENERAL && next != STATE_GENERAL)
+			state = next;
+		else if (state != STATE_GENERAL && next == state)
+			state = STATE_GENERAL;
+		len++;
+	}
+	if (state != STATE_GENERAL)
+		return (-1);
+	return (len);
 }
-
-
 
 /*    Atribui a o o type do nó correspondente e retorna o tamanho da str a 
 ser armazenada em value   */
@@ -63,39 +59,47 @@ static int	get_token_type_and_len(t_token_type *node_type, char *str)
 		return (read_word(node_type, str));
 }
 
+static t_token	*create_token(char *str, int *len)
+{
+	t_token	*token;
+
+	token = malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->next = NULL;
+	*len = get_token_type_and_len(&token->type, str);
+	if (*len <= 0)
+	{
+		free(token);
+		return (NULL);
+	}
+	token->value = ft_substr(str, 0, *len);
+	if (!token->value)
+	{
+		free(token);
+		return (NULL);
+	}
+	return (token);
+}
+
 /* Cria e retorna lista com tokens(comandos) digitados pelo usuário */
 t_token	*lexer(char *str)
 {
-	int		value_len;
-	t_token	*new_token;
 	t_token	*lst_tokens;
+	t_token	*new_token;
+	int		len;
 
 	lst_tokens = NULL;
 	while (*str)
 	{
-		while (*str == ' ' || *str == '\t')
-			str++;
+		str = skip_spaces(str);
 		if (!*str)
 			break ;
-		new_token = malloc(sizeof(t_token));
+		new_token = create_token(str, &len);
 		if (!new_token)
 			return (NULL);
-		new_token->next = NULL;
-		value_len = get_token_type_and_len(&new_token->type, str);
-		if (value_len <= 0)
-		{
-			free(new_token);
-			return (NULL);
-		}
-		new_token->value = ft_substr(str, 0, value_len);
-		if (!new_token->value)
-		{
-			free(new_token);
-			return (NULL);
-		}
 		add_back_token_lst(&lst_tokens, new_token);
-		str += value_len;
+		str += len;
 	}
 	return (lst_tokens);
 }
-
