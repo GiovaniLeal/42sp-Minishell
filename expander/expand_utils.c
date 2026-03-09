@@ -6,16 +6,12 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 12:45:41 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/03/09 16:24:08 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/03/09 16:35:39 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_isupper(char c)
-{
-    return (ft_isalnum(c) || c == '_');
-}
 
 /*get_key = */
 char    *get_key(char *str, int index)
@@ -23,10 +19,10 @@ char    *get_key(char *str, int index)
     char *key;
 
     key = ft_strdup("");
-    while (str[i] && is_env_char(str[i]))
+    while (str[ndex] && (ft_isalnum(str[index]) || str[index] == '_'))
     {
-        key = append_char(key, str[i]);
-        i++;
+        key = append_char(key, str[index]);
+        index++;
     }
     return (key);
 }
@@ -44,7 +40,9 @@ char    *handle_dollar(char *res, char *str, int index, t_shell *shell)
         return (res);
     }
     key = get_key(str, index)
-    path = get_environment(shell.lst_env, char *key)
+    path = get_environment(shell->lst_env, char *key)
+
+
     return (path);
 }
 
