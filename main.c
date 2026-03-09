@@ -53,8 +53,10 @@ void	start_shell(t_shell *shell)
 		tree = process_input(input);
 		 if (tree)
 		{
+		 	expand_ast(tree, shell);
+			print_ast_tree(parser_tree, 0);
+			free(input);
 			return ;
-		// 	expand_ast(tree, shell); //implementando
 		// 	exec_ast_tree(tree, shell); // atualizar
 		// 	free_ast(tree);
 		}
