@@ -39,6 +39,7 @@ SRC :=  main.c \
 	$(PARSING_DIR)/parsing_free.c \
 	$(PARSING_DIR)/parsing_tester.c \
 	$(EXECUTION_DIR)/exec_ast.c \
+	$(EXECUTION_DIR)/exec_pipes.c \
 	$(EXECUTION_DIR)/exec.c \
 	$(EXECUTION_DIR)/path.c \
 	$(EXECUTION_DIR)/redir.c \

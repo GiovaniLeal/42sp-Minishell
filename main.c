@@ -69,8 +69,8 @@ int	main(int argc, char **argv, char **envp)
 			exec_ast_tree(tree, envp);
 			free_ast(tree);
 		}
+		free(input);
 	}
-	free(input);
 	rl_clear_history();
 	return (0);
 }
