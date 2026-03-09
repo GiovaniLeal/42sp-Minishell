@@ -17,6 +17,7 @@ INC_DIR     := includes
 LEXER_DIR   := lexer
 PARSING_DIR := parsing
 EXECUTION_DIR := execution
+ENVIRONMENT_DIR := environment
 
 # **************************************************************************** #
 #                                   LIBFT                                      #
@@ -43,6 +44,8 @@ SRC :=  main.c \
 	$(EXECUTION_DIR)/path.c \
 	$(EXECUTION_DIR)/redir.c \
 	$(EXECUTION_DIR)/free.c \
+	$(ENVIRONMENT_DIR)/environment.c \
+	$(ENVIRONMENT_DIR)/environment_utils.c \
 
 OBJS := $(SRC:.c=.o)
 

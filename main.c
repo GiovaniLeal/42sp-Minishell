@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+/* Funcao de testes que será otimizada no futuro*/
 static t_ast	*process_input(char *input)
 {
 	t_token	*tokens;
@@ -35,42 +36,52 @@ static t_ast	*process_input(char *input)
 	return (parser_tree);
 }
 
-static char	*read_input(void)
+/*Nova funcao de orquestradora de processos*/
+void	start_shell(t_shell *shell)
 {
+	(void)shell;
 	char	*input;
+	t_ast	*tree;
 
-	input = readline(PROMPT);
-	if (!input)
-		return (NULL);
-	if (*input)
-		add_history(input);
-	return (input);
+	while (1)
+	{
+		input = readline(PROMPT);
+		if (!input)
+			break ;
+		if (*input)
+			add_history(input);
+		tree = process_input(input);
+		 if (tree)
+		{
+			return ;
+		// 	expand_ast(tree, shell); //implementando
+		// 	exec_ast_tree(tree, shell); // atualizar
+		// 	free_ast(tree);
+		}
+		free(input);
+	}
 }
 
 /* ************************************************************************** */
-/* 		          	MAIN                                  */
+/* 				MAIN                                  */
 /* ************************************************************************** */
 int	main(int argc, char **argv, char **envp)
 {
-	char	*input;
-	t_ast	*tree;
+	
+	t_shell	shell;
 
 	(void)argc;
 	(void)argv;
 	using_history();
-	while (1)
+	shell.lst_env = add_env(envp);
+	if (!shell.lst_env)
 	{
-		input = read_input();
-		if (!input)
-			break ;
-		tree = process_input(input);
-		if (tree)
-		{
-			exec_ast_tree(tree, envp);
-			free_ast(tree);
-		}
+		perror("minishell");
+		return (1);
 	}
-	free(input);
+	shell.last_exit = 0;
+	start_shell(&shell);
+	free_env_list(shell.lst_env);
 	rl_clear_history();
 	return (0);
 }
