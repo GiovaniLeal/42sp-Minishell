@@ -75,15 +75,19 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	using_history();
-	shell.lst_env = add_env(envp);
-	if (!shell.lst_env)
+	while (1)
 	{
-		perror("minishell");
-		return (1);
+		input = read_input();
+		if (!input)
+			break ;
+		tree = process_input(input);
+		if (tree)
+		{
+			exec_ast_tree(tree, envp);
+			free_ast(tree);
+		}
 	}
-	shell.last_exit = 0;
-	start_shell(&shell);
-	free_env_list(shell.lst_env);
+	free(input);
 	rl_clear_history();
 	return (0);
 }
