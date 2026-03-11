@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.c"
+#include "minishell.h"
 
 /* Percorre a str de token e retorna uma nova string com a expansão correta*/
 char *expand_tokens(char *str, t_shell *shell)
@@ -38,25 +38,26 @@ void	expand_command(char **array, t_shell *shell)
 	char	*new_string;
 
 	i = 0;
-	while (str[i])
+	while (array[i])
 	{
-		new_string = expand_tokens(str[i], shell);
-		free(str[i]);
-		str[i] = new_string;
+		new_string = expand_tokens(array[i], shell);
+		free(array[i]);
+		array[i] = new_string;
 		i++;
 	}
 }
 
-//Percorre a arvore e chama funcao de expansão caso o nó seja de comando
+//Percorre a arvore e chama funcao de expansão 
+// caso o nó seja de comando
 void	expand_ast(t_ast *node, t_shell *shell)
 {
 	if (!node)
 		return ;
 	if (node->type == NODE_CMD)
 	{
-		expand_command(node->args, shell);
-		expand_redirs(node->redirs, shell);
+		expand_command(node->argv, shell);
+		//expand_redirs(node->redirs, shell);
 	}
-	expand_ast(node->left, env);
-	expand_ast(node->right, env);
+	expand_ast(node->left, shell);
+	expand_ast(node->right, shell);
 }

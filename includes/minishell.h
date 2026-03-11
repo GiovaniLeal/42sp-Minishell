@@ -22,4 +22,5 @@
 # include "parsing.h"
 # include "execution.h"
 # include "environment.h"
+# include "expander.h"
 #endif

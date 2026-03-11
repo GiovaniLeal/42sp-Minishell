@@ -18,6 +18,7 @@ LEXER_DIR   := lexer
 PARSING_DIR := parsing
 EXECUTION_DIR := execution
 ENVIRONMENT_DIR := environment
+EXPANDER_DIR := expander
 
 # **************************************************************************** #
 #                                   LIBFT                                      #
@@ -47,6 +48,9 @@ SRC :=  main.c \
 	$(EXECUTION_DIR)/free.c \
 	$(ENVIRONMENT_DIR)/environment.c \
 	$(ENVIRONMENT_DIR)/environment_utils.c \
+	$(EXPANDER_DIR)/expand.c \
+	$(EXPANDER_DIR)/expand_utils.c 
+
 
 OBJS := $(SRC:.c=.o)
 
