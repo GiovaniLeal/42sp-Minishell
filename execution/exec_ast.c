@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/06 18:01:48 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/11 18:38:35 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ static int	exit_status(int status)
 	return (128 + (status & 0x7F));
 }
 
+/*IMPORTANTE = Aqui precisamos atualizar a assinatura para receber T_SHELL
+ T_shell guarda uma lista(cópia) de envp. É sobre ela que 
+ realizaremos a execuçâo*/
 int	exec_ast_tree(t_ast *node, char **envp)
 {
 	pid_t	pid;

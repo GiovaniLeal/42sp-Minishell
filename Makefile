@@ -89,4 +89,7 @@ fclean: clean
 
 re: fclean all
 
+valgrind:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.sup ./minishell
+
 .PHONY: all clean fclean re banner

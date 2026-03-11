@@ -53,12 +53,12 @@ void	start_shell(t_shell *shell)
 		tree = process_input(input);
 		 if (tree)
 		{
-		 	//expand_ast(tree, shell);
-			//print_ast_tree(parser_tree, 0);
+		 	expand_ast(tree, shell);
+			print_ast_tree(tree, 0);
 			free(input);
-			return ;
-		// 	exec_ast_tree(tree, shell); // atualizar
+			//exec_ast_tree(tree, shell); // atualizar
 		 	free_ast(tree);
+			continue ;
 		}
 		free(input);
 	}
@@ -75,19 +75,10 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	using_history();
-	while (1)
-	{
-		input = read_input();
-		if (!input)
-			break ;
-		tree = process_input(input);
-		if (tree)
-		{
-			exec_ast_tree(tree, envp);
-			free_ast(tree);
-		}
-	}
-	free(input);
+	shell.lst_env = add_env(envp);
+	shell.last_exit = 0;
+	start_shell(&shell);
+	free_env_list(shell.lst_env);
 	rl_clear_history();
 	return (0);
 }
