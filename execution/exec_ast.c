@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/06 18:01:48 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/11 14:30:22 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	exec_ast_tree(t_ast *node, char **envp)
 	if (!node)
 		return (0);
 	if (node->type == NODE_PIPE)
-		return(exec_pipe(node, envp));
+		return (exec_pipe(node, envp));
 	if (node->type == NODE_CMD)
 	{
 		pid = fork();
@@ -54,9 +54,8 @@ int	exec_ast_tree(t_ast *node, char **envp)
 		if (pid > 0)
 		{
 			waitpid(pid, &status, 0);
-			return(exit_status(status));
+			return (exit_status(status));
 		}
-			
 	}
 	return (0);
 }
