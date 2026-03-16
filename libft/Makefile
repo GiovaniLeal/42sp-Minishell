@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: marvin <marvin@student.42.fr>              +#+  +:+       +#+         #
+#    By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/07/11 15:22:53 by giodos-s          #+#    #+#              #
-#    Updated: 2025/11/08 20:33:13 by marvin           ###   ########.fr        #
+#    Updated: 2026/03/08 23:55:41 by giodos-s         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -58,7 +58,9 @@ PART2 = part2/ft_memset.c \
 	part2/ft_strtrim.c \
 	part2/ft_substr.c \
 	part2/ft_tolower.c \
-	part2/ft_toupper.c
+	part2/ft_toupper.c \
+	part2/ft_strcmp.c 
+
 
 PRINTF = printf/src/ft_libft_utils.c \
 	printf/src/ft_list_utils.c \

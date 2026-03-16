@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/11 14:30:22 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/16 14:24:16 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ static int	exit_status(int status)
 	return (128 + (status & 0x7F));
 }
 
+/*IMPORTANTE = Aqui precisamos atualizar a assinatura para receber T_SHELL
+ T_shell guarda uma lista(cópia) de envp. É sobre ela que 
+ realizaremos a execuçâo*/
 int	exec_ast_tree(t_ast *node, char **envp)
 {
 	pid_t	pid;

@@ -18,6 +18,8 @@ LEXER_DIR   := lexer
 PARSING_DIR := parsing
 EXECUTION_DIR := execution
 REDIRS_DIR := redirs
+ENVIRONMENT_DIR := environment
+EXPANDER_DIR := expander
 
 # **************************************************************************** #
 #                                   LIBFT                                      #
@@ -45,6 +47,11 @@ SRC :=  main.c \
 	$(EXECUTION_DIR)/path.c \
 	$(REDIRS_DIR)/redir.c \
 	$(EXECUTION_DIR)/free.c \
+	$(ENVIRONMENT_DIR)/environment.c \
+	$(ENVIRONMENT_DIR)/environment_utils.c \
+	$(EXPANDER_DIR)/expand.c \
+	$(EXPANDER_DIR)/expand_utils.c 
+
 
 OBJS := $(SRC:.c=.o)
 
@@ -97,5 +104,8 @@ fclean: clean
 	@echo "\033[1;31mBinary removed.\033[0m"
 
 re: fclean all
+
+valgrind:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.sup ./minishell
 
 .PHONY: all clean fclean re banner
