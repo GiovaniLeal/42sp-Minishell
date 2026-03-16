@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/16 14:24:16 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/16 16:39:12 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ static int	exit_status(int status)
  realizaremos a execuçâo*/
 int	exec_ast_tree(t_ast *node, char **envp)
 {
-	pid_t	pid;
-	int		status;
+	int		result;
 
 	if (!node)
 		return (0);
@@ -46,19 +45,31 @@ int	exec_ast_tree(t_ast *node, char **envp)
 		return (exec_pipe(node, envp));
 	if (node->type == NODE_CMD)
 	{
-		pid = fork();
-		if (pid < 0)
-			return (-1);
-		if (pid == 0)
-		{
-			exec_node(node, envp);
-			exit (1);
-		}
-		if (pid > 0)
-		{
-			waitpid(pid, &status, 0);
-			return (exit_status(status));
-		}
+		result = exec_builtins(node, envp);
+		if (result != -1)
+			return (result);
+		return (exec_forked(node, envp));
+	}
+	return (0);
+}
+
+int	exec_forked(t_ast *node, char **envp)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid < 0)
+		return (-1);
+	if (pid == 0)
+	{
+		exec_node(node, envp);
+		exit (1);
+	}
+	if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		return (exit_status(status));
 	}
 	return (0);
 }

@@ -48,9 +48,9 @@ SRC :=  main.c \
 	$(REDIRS_DIR)/redir.c \
 	$(EXECUTION_DIR)/free.c \
 	$(ENVIRONMENT_DIR)/environment.c \
-	$(ENVIRONMENT_DIR)/environment_utils.c \
-	$(EXPANDER_DIR)/expand.c \
-	$(EXPANDER_DIR)/expand_utils.c 
+	$(ENVIRONMENT_DIR)/environment_utils.c 
+# 	$(EXPANDER_DIR)/expand.c 
+# 	$(EXPANDER_DIR)/expand_utils.c 
 
 
 OBJS := $(SRC:.c=.o)

@@ -42,6 +42,7 @@ void	start_shell(t_shell *shell)
 	(void)shell;
 	char	*input;
 	t_ast	*tree;
+	// char	**envp;
 
 	while (1)
 	{
@@ -53,10 +54,10 @@ void	start_shell(t_shell *shell)
 		tree = process_input(input);
 		 if (tree)
 		{
-		 	expand_ast(tree, shell);
+		 	// expand_ast(tree, shell);
 			print_ast_tree(tree, 0);
 			free(input);
-			//exec_ast_tree(tree, shell); // atualizar
+			exec_ast_tree(tree, env_to_array(shell->lst_env));// atualizar
 		 	free_ast(tree);
 			continue ;
 		}
@@ -69,7 +70,6 @@ void	start_shell(t_shell *shell)
 /* ************************************************************************** */
 int	main(int argc, char **argv, char **envp)
 {
-	
 	t_shell	shell;
 
 	(void)argc;
