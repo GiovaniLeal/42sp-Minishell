@@ -17,7 +17,7 @@ INC_DIR     := includes
 LEXER_DIR   := lexer
 PARSING_DIR := parsing
 EXECUTION_DIR := execution
-REDIRS_DIR := redirections
+REDIRS_DIR := redirs
 
 # **************************************************************************** #
 #                                   LIBFT                                      #
@@ -43,7 +43,7 @@ SRC :=  main.c \
 	$(EXECUTION_DIR)/exec_pipes.c \
 	$(EXECUTION_DIR)/exec.c \
 	$(EXECUTION_DIR)/path.c \
-	$(REDIR_DIR)/redir.c \
+	$(REDIRS_DIR)/redir.c \
 	$(EXECUTION_DIR)/free.c \
 
 OBJS := $(SRC:.c=.o)
