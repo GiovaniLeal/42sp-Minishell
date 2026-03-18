@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:21:32 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/16 16:48:21 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/18 14:47:20 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,8 @@ int		exec_ast_tree(t_ast *tree, char **envp);
 void	free_split(char **array);
 int		exec_pipe(t_ast *node, char **envp);
 int		exec_builtins(t_ast *node, char **envp);
+int		exec_forked(t_ast *node, char **envp);
+int		ft_exit(char **argv);
+int		error_msg(char *cmd, char *detail, char *msg, int error_nbr);
 
 #endif

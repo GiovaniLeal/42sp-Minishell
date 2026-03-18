@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/16 16:39:12 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/18 14:27:25 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ int	exec_ast_tree(t_ast *node, char **envp)
 	return (0);
 }
 
+/*  vai usar execve para executar os comandos e usar o fork para criar 
+uma cópia do processo
+retornos de fork:
+pid < 0 (negativo) falha
+pid == 0 (zero) processo FILHO
+pid > 0 (positivo) processo PAI
+*/
 int	exec_forked(t_ast *node, char **envp)
 {
 	pid_t	pid;

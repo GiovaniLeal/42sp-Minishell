@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 14:57:33 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/06 18:00:24 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/18 14:27:15 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,6 @@ static void	execute_child(char *path, char **argv, char **envp)
 	exit(127);
 }
 
-/*  vai usar execve para executar os comandos e usar o fork para criar 
-uma cópia do processo
-retornos de fork:
-pid < 0 (negativo) falha
-pid == 0 (zero) processo FILHO
-pid > 0 (positivo) processo PAI
-*/
 void	exec_simple(t_ast *node, char **envp)
 {
 	char	*path_to_exec;

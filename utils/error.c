@@ -1,21 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/16 16:35:07 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/18 14:02:45 by anunes-o         ###   ########.fr       */
+/*   Created: 2026/03/18 14:04:43 by anunes-o          #+#    #+#             */
+/*   Updated: 2026/03/18 14:44:46 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_builtins(t_ast *node, char **envp)
+int	error_msg(char *cmd, char *detail, char *msg, int error_nbr)
 {
-	(void)envp;
-	if (ft_strcmp(node->argv[0], "exit") == 0)
-		return (ft_exit(node->argv));
-	return (0);
+	ft_putstr("minishell: ", 2);
+	ft_putstr(cmd, 2);
+	ft_pustr(": ", 2);
+	if (detail != NULL)
+	{
+		ft_putstr(detail, 2);
+		ft_putstr(": ", 2);
+	}
+	if (msg != NULL)
+		ft_putstr(msg, 2);
+	ft_putstr("\n", 2);
+	return (error_nbr);
 }

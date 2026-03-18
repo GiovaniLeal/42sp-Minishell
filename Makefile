@@ -20,6 +20,8 @@ EXECUTION_DIR := execution
 REDIRS_DIR := redirs
 ENVIRONMENT_DIR := environment
 EXPANDER_DIR := expander
+BUILTINS_DIR := builtins
+UTILS_DIR := utils
 
 # **************************************************************************** #
 #                                   LIBFT                                      #
@@ -46,12 +48,13 @@ SRC :=  main.c \
 	$(EXECUTION_DIR)/exec.c \
 	$(EXECUTION_DIR)/path.c \
 	$(REDIRS_DIR)/redir.c \
-	$(EXECUTION_DIR)/free.c \
+	$(UTILS_DIR)/free.c \
 	$(ENVIRONMENT_DIR)/environment.c \
-	$(ENVIRONMENT_DIR)/environment_utils.c 
+	$(ENVIRONMENT_DIR)/environment_utils.c \
+	$(BUILTINS_DIR)/builtins.c \
+	$(BUILTINS_DIR)/exit.c
 # 	$(EXPANDER_DIR)/expand.c 
 # 	$(EXPANDER_DIR)/expand_utils.c 
-
 
 OBJS := $(SRC:.c=.o)
 
