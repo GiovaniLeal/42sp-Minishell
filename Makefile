@@ -17,8 +17,11 @@ INC_DIR     := includes
 LEXER_DIR   := lexer
 PARSING_DIR := parsing
 EXECUTION_DIR := execution
+REDIRS_DIR := redirs
 ENVIRONMENT_DIR := environment
 EXPANDER_DIR := expander
+BUILTINS_DIR := builtins
+UTILS_DIR := utils
 
 # **************************************************************************** #
 #                                   LIBFT                                      #
@@ -44,13 +47,16 @@ SRC :=  main.c \
 	$(EXECUTION_DIR)/exec_pipes.c \
 	$(EXECUTION_DIR)/exec.c \
 	$(EXECUTION_DIR)/path.c \
-	$(EXECUTION_DIR)/redir.c \
-	$(EXECUTION_DIR)/free.c \
+	$(REDIRS_DIR)/redir.c \
+	$(UTILS_DIR)/free.c \
 	$(ENVIRONMENT_DIR)/environment.c \
 	$(ENVIRONMENT_DIR)/environment_utils.c \
-	$(EXPANDER_DIR)/expand.c \
-	$(EXPANDER_DIR)/expand_utils.c 
-
+	$(BUILTINS_DIR)/builtins.c \
+	$(BUILTINS_DIR)/exit.c \
+	$(UTILS_DIR)/ft_atol_safe.c \
+	$(UTILS_DIR)/error.c \
+ 	$(EXPANDER_DIR)/expand.c \
+ 	$(EXPANDER_DIR)/expand_utils.c
 
 OBJS := $(SRC:.c=.o)
 
@@ -80,6 +86,17 @@ $(NAME): $(LIBFT) $(OBJS)
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
+
+val:
+	@valgrind -q\
+		--leak-check=full \
+		--show-leak-kinds=all \
+		--track-origins=yes \
+		--track-fds=yes \
+		--trace-children=yes \
+		--trace-children-skip='*/bin/*,*/sbin/*,/usr/bin/*' \
+		--suppressions=./valgrind.supp \
+		./$(NAME)
 
 clean:
 	rm -f $(OBJS)

@@ -59,10 +59,7 @@ void	start_shell(t_shell *shell)
 		{
 		 	expand_ast(tree, shell);
 			print_ast_tree(tree, 0);
-			//process_heredocs(tree)
-			print_ast_tree(tree, 0);
-			exec_ast_tree(tree, shell); // atualizar
-			print_ast_tree(tree, 0);
+			exec_ast_tree(tree, shell);// atualizar
 			free(input);
 		 	free_ast(tree);
 			continue ;
@@ -76,7 +73,6 @@ void	start_shell(t_shell *shell)
 /* ************************************************************************** */
 int	main(int argc, char **argv, char **envp)
 {
-	
 	t_shell	shell;
 
 	(void)argc;

@@ -34,6 +34,7 @@ static void exec_pipe_right(int *pipefd, t_ast *node, t_shell *shell)
     exec_ast_tree(node->right, shell);
     exit(1);
 }
+
 /* Fecha o pipefd corretamente em caso de erro
 */
 static int	close_pipes(int *pipefd)
@@ -42,6 +43,7 @@ static int	close_pipes(int *pipefd)
 	close(pipefd[1]);
 	return (-1);
 }
+
 /* O pipe cria um canal de comunicação entre processos
 pipe(pipefd) cria dois file descriptors:
  pipefd[2] -> fd[0] = leitura, fd[1] = escrita

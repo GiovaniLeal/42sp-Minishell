@@ -29,6 +29,7 @@ typedef struct s_redir
 {
 	t_token_type	type;
 	char			*file;
+	int				fd;
 	struct s_redir	*next;
 }	t_redir;
 
