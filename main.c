@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /* Funcao de testes que será otimizada no futuro*/
-static t_ast	*process_input(char *input)
+static t_ast *process_input(char *input)
 {
 	t_token	*tokens;
 	t_ast	*parser_tree;
@@ -39,7 +39,6 @@ static t_ast	*process_input(char *input)
 /*Nova funcao de orquestradora de processos*/
 void	start_shell(t_shell *shell)
 {
-	(void)shell;
 	char	*input;
 	t_ast	*tree;
 
@@ -47,16 +46,24 @@ void	start_shell(t_shell *shell)
 	{
 		input = readline(PROMPT);
 		if (!input)
-			break ;
+		{
+			//criar um cleanup_shell ??s
+			free_env_list(shell->lst_env);
+			rl_clear_history();
+			break;
+		}
 		if (*input)
 			add_history(input);
 		tree = process_input(input);
-		 if (tree)
+		if (tree)
 		{
 		 	expand_ast(tree, shell);
 			print_ast_tree(tree, 0);
+			//process_heredocs(tree)
+			print_ast_tree(tree, 0);
+			exec_ast_tree(tree, shell); // atualizar
+			print_ast_tree(tree, 0);
 			free(input);
-			//exec_ast_tree(tree, shell); // atualizar
 		 	free_ast(tree);
 			continue ;
 		}
