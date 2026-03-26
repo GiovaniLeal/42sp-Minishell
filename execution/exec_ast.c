@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   exec_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/18 14:27:25 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/26 19:36:52 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_node(t_ast *node, char **envp)
+static int	exec_node(t_ast *node, t_shell *shell)
 {
 	if (!node || !node->argv || !node->argv[0])
+	{
 		return (0);
-	exec_simple(node, envp);
+	}
+	exec_simple(node, shell);
 	return (0);
 }
 
@@ -35,48 +37,31 @@ static int	exit_status(int status)
 /*IMPORTANTE = Aqui precisamos atualizar a assinatura para receber T_SHELL
  T_shell guarda uma lista(cópia) de envp. É sobre ela que 
  realizaremos a execuçâo*/
-int	exec_ast_tree(t_ast *node, char **envp)
+int exec_ast_tree(t_ast *node, t_shell *shell)
 {
-	int		result;
+    pid_t  pid;
+    int    status;
 
-	if (!node)
-		return (0);
-	if (node->type == NODE_PIPE)
-		return (exec_pipe(node, envp));
-	if (node->type == NODE_CMD)
-	{
-		result = exec_builtins(node, envp);
-		if (result != -1)
-			return (result);
-		return (exec_forked(node, envp));
-	}
-	return (0);
-}
+    if (!node)
+        return (0);
 
-/*  vai usar execve para executar os comandos e usar o fork para criar 
-uma cópia do processo
-retornos de fork:
-pid < 0 (negativo) falha
-pid == 0 (zero) processo FILHO
-pid > 0 (positivo) processo PAI
-*/
-int	exec_forked(t_ast *node, char **envp)
-{
-	pid_t	pid;
-	int		status;
+    if (node->type == NODE_PIPE)
+        return (exec_pipe(node, shell));
 
-	pid = fork();
-	if (pid < 0)
-		return (-1);
-	if (pid == 0)
-	{
-		exec_node(node, envp);
-		exit (1);
-	}
-	if (pid > 0)
-	{
-		waitpid(pid, &status, 0);
-		return (exit_status(status));
-	}
-	return (0);
+    if (node->type == NODE_CMD)
+    {
+        pid = fork();
+        if (pid < 0)
+            return (-1);
+
+        if (pid == 0)
+        {
+            exec_node(node, shell);
+            exit(1); // fallback
+        }
+
+        waitpid(pid, &status, 0);
+        return (exit_status(status));
+    }
+    return (0);
 }

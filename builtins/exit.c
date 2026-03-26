@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:54:06 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/19 16:29:06 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/26 19:40:46 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	is_numeric(char	*str)
 int	ft_exit(char **argv)
 {
 	long	nbr;
-	int		error;
+	//int		error;
 
 	if ((!argv[1]) || (is_numeric(argv[1]) && !argv[2]))
 	{
@@ -44,14 +44,14 @@ int	ft_exit(char **argv)
 	}
 	if (!is_numeric(argv[1]))
 	{
-		error_msg(argv[0], argv[1], "numeric argument required", 2);
+		//error_msg(argv[0], argv[1], "numeric argument required", 2);
 		exit(2);
 	}
 	if (argv[2])
 	{
-		error_msg(argv[0], NULL, "too many arguments", 1);
+		//error_msg(argv[0], NULL, "too many arguments", 1);
 		return (1);
 	}
-	nbr = ft_atol_safe(argv[1], &error);
+	nbr = 0; // teste = ft_atol_safe(argv[1], &error);
 	exit((unsigned char)nbr);
 }
