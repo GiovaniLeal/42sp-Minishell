@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/26 19:36:52 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/03/26 21:00:13 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,11 @@ int exec_ast_tree(t_ast *node, t_shell *shell)
         pid = fork();
         if (pid < 0)
             return (-1);
-
         if (pid == 0)
         {
             exec_node(node, shell);
             exit(1); // fallback
         }
-
         waitpid(pid, &status, 0);
         return (exit_status(status));
     }

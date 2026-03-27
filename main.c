@@ -46,12 +46,7 @@ void	start_shell(t_shell *shell)
 	{
 		input = readline(PROMPT);
 		if (!input)
-		{
-			//criar um cleanup_shell ??s
-			free_env_list(shell->lst_env);
-			rl_clear_history();
 			break;
-		}
 		if (*input)
 			add_history(input);
 		tree = process_input(input);
@@ -59,7 +54,7 @@ void	start_shell(t_shell *shell)
 		{
 		 	expand_ast(tree, shell);
 			print_ast_tree(tree, 0);
-			exec_ast_tree(tree, shell);// atualizar
+			exec_ast_tree(tree, shell);
 			free(input);
 		 	free_ast(tree);
 			continue ;
