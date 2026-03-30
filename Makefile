@@ -35,6 +35,7 @@ INCLUDES    := -I$(INC_DIR) -I$(LIBFT_INC)
 #                                   SOURCES                                    #
 # **************************************************************************** #
 SRC :=  main.c \
+	signals.c \
 	$(LEXER_DIR)/lexer.c \
 	$(LEXER_DIR)/lexer_list.c \
 	$(LEXER_DIR)/lexer_utils.c \

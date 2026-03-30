@@ -45,6 +45,11 @@ void	start_shell(t_shell *shell)
 	while (1)
 	{
 		input = readline(PROMPT);
+		if (get_signal())
+		{
+			shell->last_exit = get_signal();
+			reset_signal();
+		}
 		if (!input)
 			break;
 		if (*input)
@@ -66,6 +71,10 @@ void	start_shell(t_shell *shell)
 /* ************************************************************************** */
 /* 				MAIN                                  */
 /* ************************************************************************** */
+
+// Melhoria - Não executa comando no caso de rodar o programa já com argumentos.
+
+
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
@@ -73,6 +82,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	using_history();
+	setup_signals();
 	shell.lst_env = add_env(envp);
 	shell.last_exit = 0;
 	start_shell(&shell);

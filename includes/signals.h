@@ -1,30 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/02/21 19:28:40 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/02/21 19:28:40 by giodos-s         ###   ########.fr       */
+/*   Created: 2026/03/30 19:22:56 by giodos-s          #+#    #+#             */
+/*   Updated: 2026/03/30 19:22:56 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
+#include "minishell.h"
 
-# include "libft.h"
-# include "ft_printf.h"
-# include <signal.h>
-# include <stdlib.h>
-# include <unistd.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include "tokens.h"
-# include "parsing.h"
-# include "execution.h"
-# include "environment.h"
-# include "expander.h"
-# include "signals.h"
-
-#endif
+int	get_signal(void);
+void	reset_signal(void);
+void	setup_signals(void);
