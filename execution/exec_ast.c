@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/26 21:00:13 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/03/30 20:26:27 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,21 @@ int exec_ast_tree(t_ast *node, t_shell *shell)
 
     if (!node)
         return (0);
-
     if (node->type == NODE_PIPE)
         return (exec_pipe(node, shell));
-
-    if (node->type == NODE_CMD)
+    signal(SIGINT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
+    pid = fork();
+    if (pid < 0)
+        return (-1);
+    if (pid == 0)
     {
-        pid = fork();
-        if (pid < 0)
-            return (-1);
-        if (pid == 0)
-        {
-            exec_node(node, shell);
-            exit(1); // fallback
-        }
-        waitpid(pid, &status, 0);
-        return (exit_status(status));
+        signal(SIGINT, SIG_DFL);
+        signal(SIGQUIT, SIG_DFL);
+        exec_node(node, shell);
+        exit(1);
     }
-    return (0);
+    waitpid(pid, &status, 0);
+    setup_signals();
+    return (exit_status(status));
 }
