@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 15:21:10 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/31 13:52:04 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/03/31 16:04:07 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,15 @@ int	apply_redirections(t_redir *redir)
 
 	while (redir)
 	{
-		fd = open_redir(redir);
+		if (redir->type == T_HEREDOC)
+			fd = redir->heredoc_fd;
+		else
+		{
+			fd = open_redir(redir);
+		}
 		if (fd < 0)
 			return (-1);
-		if (redir->type == T_REDIR_IN)
+		if (redir->type == T_REDIR_IN || redir->type == T_HEREDOC)
 			dup2(fd, STDIN_FILENO);
 		else
 			dup2(fd, STDOUT_FILENO);

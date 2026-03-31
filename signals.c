@@ -26,12 +26,12 @@ void	reset_signal(void)
 
 static void	handle_sigint(int sig)
 {
-	ssize_t ret;
+	ssize_t re;
 
 	(void)sig;
 	g_signal = 130;
-	ret = write(1, "\n", 1);
-	(void)ret;
+	re = write(1, "\n", 1);
+	(void)re;
 	rl_replace_line("", 0); //limpa linha atual
 	rl_on_new_line(); //nova linha lógica
 	rl_redisplay(); //redefine o prompt

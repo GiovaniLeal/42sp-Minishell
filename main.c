@@ -51,18 +51,21 @@ void	start_shell(t_shell *shell)
 			reset_signal();
 		}
 		if (!input)
-			break;
+			break ;
 		if (*input)
 			add_history(input);
 		tree = process_input(input);
 		if (tree)
 		{
-		 	expand_ast(tree, shell);
+			if (apply_heredocs(tree) < 0)
+			{
+				free(input);
+				free_ast(tree);
+				continue ;
+			}
+			expand_ast(tree, shell);
 			print_ast_tree(tree, 0);
 			exec_ast_tree(tree, shell);
-			free(input);
-		 	free_ast(tree);
-			continue ;
 		}
 		free(input);
 	}

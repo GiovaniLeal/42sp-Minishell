@@ -49,6 +49,7 @@ SRC :=  main.c \
 	$(EXECUTION_DIR)/exec.c \
 	$(EXECUTION_DIR)/path.c \
 	$(REDIRS_DIR)/redir.c \
+	$(REDIRS_DIR)/heredoc.c \
 	$(UTILS_DIR)/free.c \
 	$(ENVIRONMENT_DIR)/environment.c \
 	$(ENVIRONMENT_DIR)/environment_utils.c \
