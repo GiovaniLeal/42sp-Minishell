@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:21:32 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/26 19:36:49 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/03/31 14:25:03 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,6 @@ int		apply_redirections(t_redir *redir);
 int 	exec_ast_tree(t_ast *node, t_shell *shell);
 void	free_split(char **array);
 int exec_pipe(t_ast *node, t_shell *shell);
+int exec_forked(t_ast *node, t_shell *shell);
 
 #endif

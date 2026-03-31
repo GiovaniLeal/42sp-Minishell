@@ -1,0 +1,4 @@
+
+
+-- Testes que estão falhando 
+1 -  Comando [ls | grep main] = still reachable: 4,642 bytes in 218 blocks 

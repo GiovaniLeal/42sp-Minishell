@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/30 20:26:27 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/03/31 15:05:14 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,12 @@ static int	exit_status(int status)
 	return (128 + (status & 0x7F));
 }
 
-/*IMPORTANTE = Aqui precisamos atualizar a assinatura para receber T_SHELL
- T_shell guarda uma lista(cópia) de envp. É sobre ela que 
- realizaremos a execuçâo*/
-int exec_ast_tree(t_ast *node, t_shell *shell)
+
+int exec_forked(t_ast *node, t_shell *shell)
 {
     pid_t  pid;
     int    status;
 
-    if (!node)
-        return (0);
-    if (node->type == NODE_PIPE)
-        return (exec_pipe(node, shell));
-    signal(SIGINT, SIG_IGN);
-    signal(SIGQUIT, SIG_IGN);
     pid = fork();
     if (pid < 0)
         return (-1);
@@ -62,3 +54,25 @@ int exec_ast_tree(t_ast *node, t_shell *shell)
     setup_signals();
     return (exit_status(status));
 }
+
+
+
+int exec_ast_tree(t_ast *node, t_shell *shell)
+{
+    int result;
+
+    if (!node)
+        return (0);
+    if (node->type == NODE_PIPE)
+        return (exec_pipe(node, shell));
+    signal(SIGINT, SIG_IGN);
+    signal(SIGQUIT, SIG_IGN);
+    result = exec_builtins(node, shell);
+    if (result != -1)
+    {
+        setup_signals();
+        return (result);
+    }
+    return (exec_forked(node, shell));
+}
+

@@ -54,6 +54,7 @@ SRC :=  main.c \
 	$(ENVIRONMENT_DIR)/environment_utils.c \
 	$(BUILTINS_DIR)/builtins.c \
 	$(BUILTINS_DIR)/exit.c \
+	$(BUILTINS_DIR)/echo.c \
 	$(UTILS_DIR)/ft_atol_safe.c \
 	$(UTILS_DIR)/error.c \
  	$(EXPANDER_DIR)/expand.c \
