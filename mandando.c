@@ -1,0 +1,61 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mandando.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/31 14:07:20 by anunes-o          #+#    #+#             */
+/*   Updated: 2026/03/31 14:07:24 by anunes-o         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+/*IMPORTANTE = Aqui precisamos atualizar a assinatura para receber T_SHELL
+ T_shell guarda uma lista(cópia) de envp. É sobre ela que 
+ realizaremos a execuçâo*/
+int	exec_ast_tree(t_ast *node, char **envp)
+{
+	int		result;
+
+	if (!node)
+		return (0);
+	if (node->type == NODE_PIPE)
+		return (exec_pipe(node, envp));
+	if (node->type == NODE_CMD)
+	{
+		result = exec_builtins(node, envp);
+		if (result != -1)
+			return (result);
+		return (exec_forked(node, envp));
+	}
+	return (0);
+}
+
+/*  vai usar execve para executar os comandos e usar o fork para criar 
+uma cópia do processo
+retornos de fork:
+pid < 0 (negativo) falha
+pid == 0 (zero) processo FILHO
+pid > 0 (positivo) processo PAI
+*/
+int	exec_forked(t_ast *node, char **envp)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid < 0)
+		return (-1);
+	if (pid == 0)
+	{
+		exec_node(node, envp);
+		exit (1);
+	}
+	if (pid > 0)
+	{
+		waitpid(pid, &status, 0);
+		return (exit_status(status));
+	}
+	return (0);
+}
