@@ -6,48 +6,48 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 15:13:54 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/03/31 17:17:35 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/02 19:23:45 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int check_option(char **str_array)
+//Percorre a string e conta o numero de argumentos 'n'
+/* Retorna 1 se todos os caracteres depois de '-'são 'n'e 0 em caso contrário*/
+static int	is_n_option(char *str)
 {
-    int count;
+	int	i;
 
-    count = 0;
-    while (str_array[count] && ft_strcmp(str_array[count], "-n") == 0)
-    {
-        count++;
-    }
-    return (count);
+	if (!str || str[0] != '-')
+		return (0);
+	i = 1;
+	if (str[i] == '\0')
+		return (0);
+	while (str[i] == 'n')
+		i++;
+	return (str[i] == '\0');
 }
 
-int exec_echo(char **str_array)
+int	exec_echo(char **str_array)
 {
-    int i;
-    int has_n_option;
+	int	i;
+	int	newline;
 
-    i = 1;
-    has_n_option = check_option(str_array);
-
-    if (has_n_option)
-    {
-        while (str_array[has_n_option + i])
-        {
-            ft_printf("%s", str_array);
-            has_n_option++;
-        }
-    }
-    else
-    {
-        while (str_array[i])
-        {
-            ft_printf("%s ", str_array[i]);
-            i++;
-        }
-        ft_printf("\n");
-    }   
-    return (0);
+	i = 1;
+	newline = 1;
+	while (str_array[i] && is_n_option(str_array[i]))
+	{
+		newline = 0;
+		i++;
+	}
+	while (str_array[i])
+	{
+		ft_printf("%s", str_array[i]);
+		if (str_array[i + 1])
+			ft_printf(" ");
+		i++;
+	}
+	if (newline)
+		ft_printf("\n");
+	return (0);
 }
