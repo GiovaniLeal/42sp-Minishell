@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:25:56 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/02 19:52:22 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/03 12:52:08 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	is_numeric(char	*str);
 
 int exec_echo(char **str_array);
 int	exec_pwd(char **argv);
+int	exec_cd(char **argv, t_env *env);
 
 
 
