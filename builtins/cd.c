@@ -22,56 +22,86 @@ static t_env	*find_node(char *key, t_env *lst_env)
 	return (temp_node);
 }
 
-static void update_env(char *key, char *path, t_env **lst_env)
+static void	update_env(char *key, char *path, t_env **lst_env)
 {
-	t_env	*aux_node;
+	t_env	*node;
 	char	*new_node_str;
+	char	*new_value;
 
-	aux_node = find_node(key, *lst_env);
-	if (aux_node)
+	node = find_node(key, *lst_env);
+	if (node)
 	{
-		free(aux_node->value);
-		aux_node->value = ft_strdup(path);
+		new_value = ft_strdup(path);
+		if (!new_value)
+			return ;
+		free(node->value);
+		node->value = new_value;
 	}
-	else 
+	else
 	{
 		new_node_str = str_join_three(key, '=', path);
-		aux_node = create_environment(new_node_str);
-		add_environment(lst_env, aux_node);
+		if (!new_node_str)
+			return ;
+		node = create_environment(new_node_str);
+		add_environment(lst_env, node);
 		free(new_node_str);
 	}
+}
 
+static int	update_pwd_env(t_env **env, char *old_path)
+{
+	char	*new_pwd;
+
+	new_pwd = getcwd(NULL, 0);
+	if (!new_pwd)
+		return (perror("getcwd"), 1);
+	update_env("OLDPWD", old_path, env);
+	update_env("PWD", new_pwd, env);
+	free(new_pwd);
+	return (0);
+}
+
+static int	change_directory(char *path)
+{
+	if (chdir(path))
+	{
+		perror("cd");
+		return (1);
+	}
+	return (0);
+}
+
+static char	*resolve_cd_path(char **argv, t_env *env)
+{
+	char	*path;
+
+	if (!argv[1])
+	{
+		path = get_environment(env, "HOME");
+		if (!path)
+			ft_printf("cd : HOME not set\n");
+		return (path);
+	}
+	return (argv[1]);
 }
 
 int	exec_cd(char **argv, t_env *env)
 {
-	int	status;
-	char	*current_pwd;
-	char	*new_pwd;
+	char	*path;
+	char	*old_path;
 
-	if ((argv[1] && argv[2]) || !argv[1])
-	{
-		ft_printf("cd : too many arguments\n");
+	if (argv[1] && argv[2])
+		return (ft_printf("cd : too many arguments\n"), 1);
+	path = resolve_cd_path(argv, env);
+	if (!path)
 		return (1);
-	}
-	current_pwd = getcwd(NULL, 0);
-	status = chdir(argv[1]);
-	if (status)
-	{
-		perror("cd");
-		free(current_pwd);
-		return (1);
-	}
-	new_pwd = getcwd(NULL, 0);
-	if (!new_pwd)
-	{
-		perror("pwd");
-		free(current_pwd);
-		return (1);
-	}
-	update_env("OLDPWD", current_pwd, &env);
-	update_env("PWD", new_pwd, &env);
-	free(current_pwd);
-	free(new_pwd);
+	old_path = getcwd(NULL, 0);
+	if (!old_path)
+		return (perror("getcwd"), 1);
+	if (change_directory(path))
+		return (free(old_path), 1);
+	if (update_pwd_env(&env, old_path))
+		return (free(old_path), 1);
+	free(old_path);
 	return (0);
 }
