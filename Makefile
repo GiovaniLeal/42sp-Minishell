@@ -49,6 +49,7 @@ SRC :=  main.c \
 	$(EXECUTION_DIR)/exec.c \
 	$(EXECUTION_DIR)/path.c \
 	$(REDIRS_DIR)/redir.c \
+	$(REDIRS_DIR)/heredoc_utils.c \
 	$(REDIRS_DIR)/heredoc.c \
 	$(UTILS_DIR)/free.c \
 	$(ENVIRONMENT_DIR)/environment.c \
@@ -88,17 +89,6 @@ $(NAME): $(LIBFT) $(OBJS)
 
 $(LIBFT):
 	@$(MAKE) -C $(LIBFT_DIR) --no-print-directory
-
-val:
-	@valgrind -q\
-		--leak-check=full \
-		--show-leak-kinds=all \
-		--track-origins=yes \
-		--track-fds=yes \
-		--trace-children=yes \
-		--trace-children-skip='*/bin/*,*/sbin/*,/usr/bin/*' \
-		--suppressions=./valgrind.supp \
-		./$(NAME)
 
 clean:
 	rm -f $(OBJS)
