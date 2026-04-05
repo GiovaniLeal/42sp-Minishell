@@ -26,10 +26,11 @@ int	exec_env(char **argv, t_env *env)
 		if (env->value)
 		{
 			key_plus_path = str_join_three(env->key, '=', env->value);
-			if (!key_plus_path)
-				continue;
-			ft_printf("%s\n", key_plus_path);
-			free(key_plus_path);
+			if (key_plus_path)
+			{
+				ft_printf("%s\n", key_plus_path);
+				free(key_plus_path);
+			}
 		}
 		env = env->next;
 	}
