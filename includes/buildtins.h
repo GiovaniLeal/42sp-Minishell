@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:25:56 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/03 12:52:08 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/05 16:36:45 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,4 @@ int	exec_pwd(char **argv);
 int	exec_cd(char **argv, t_env *env);
 
 
-
+int	exec_env(char **argv, t_env *env);
