@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/31 15:05:14 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/06 20:06:15 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@ int exec_forked(t_ast *node, t_shell *shell)
     return (exit_status(status));
 }
 
-
-
 int exec_ast_tree(t_ast *node, t_shell *shell)
 {
     int result;
@@ -64,15 +62,20 @@ int exec_ast_tree(t_ast *node, t_shell *shell)
     if (!node)
         return (0);
     if (node->type == NODE_PIPE)
-        return (exec_pipe(node, shell));
+    {
+        result = exec_pipe(node, shell);
+        shell->last_exit = result;
+        return (result);
+    }
     signal(SIGINT, SIG_IGN);
     signal(SIGQUIT, SIG_IGN);
     result = exec_builtins(node, shell);
     if (result != -1)
     {
-        setup_signals();
+        shell->last_exit = result;
         return (result);
     }
-    return (exec_forked(node, shell));
+    result = exec_forked(node, shell);
+    shell->last_exit = result;
+    return (result);
 }
-
