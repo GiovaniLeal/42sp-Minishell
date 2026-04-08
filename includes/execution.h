@@ -6,9 +6,10 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:21:32 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/08 13:16:23 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/08 16:14:25 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 
 #ifndef EXECUTION_H
@@ -26,11 +27,9 @@
 char	*find_in_path(char	*cmd);
 void	exec_simple(t_ast *node, t_shell *shell);
 int		apply_redirections(t_redir *redir);
-int		exec_ast_tree(t_ast *node, t_shell *shell);
+int 	exec_ast_tree(t_ast *node, t_shell *shell);
 void	free_split(char **array);
-int		exec_pipe(t_ast *node, t_shell *shell);
-int		apply_heredocs(t_ast *node);
-int		heredoc(char *delimiter);
-int		close_fd(int fd, char *line, char *filename);
+int exec_pipe(t_ast *node, t_shell *shell);
+int exec_forked(t_ast *node, t_shell *shell);
 
 #endif
