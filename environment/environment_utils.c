@@ -72,8 +72,8 @@ int	env_size(t_env *lst_env)
 usada no executor !!*/
 char	**env_to_array(t_env *env)
 {
-	int	i;
-	int	size;
+	int		i;
+	int		size;
 	char	**array;
 
 	i = 0;

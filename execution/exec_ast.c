@@ -3,24 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   exec_ast.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/30 20:26:27 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/08 14:04:58 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	exec_node(t_ast *node, t_shell *shell)
-{
-	if (!node || !node->argv || !node->argv[0])
-	{
-		return (0);
-	}
-	exec_simple(node, shell);
-	return (0);
-}
 
 /* vai diagnosticar qual tipo de erro ocorreu para determinar os 
 códigos de saída checando o retorno em status e somando com 
@@ -34,31 +24,48 @@ static int	exit_status(int status)
 	return (128 + (status & 0x7F));
 }
 
-/*IMPORTANTE = Aqui precisamos atualizar a assinatura para receber T_SHELL
- T_shell guarda uma lista(cópia) de envp. É sobre ela que 
- realizaremos a execuçâo*/
-int exec_ast_tree(t_ast *node, t_shell *shell)
-{
-    pid_t  pid;
-    int    status;
 
-    if (!node)
-        return (0);
-    if (node->type == NODE_PIPE)
-        return (exec_pipe(node, shell));
-    signal(SIGINT, SIG_IGN);
-    signal(SIGQUIT, SIG_IGN);
-    pid = fork();
-    if (pid < 0)
-        return (-1);
-    if (pid == 0)
-    {
-        signal(SIGINT, SIG_DFL);
-        signal(SIGQUIT, SIG_DFL);
-        exec_node(node, shell);
-        exit(1);
-    }
-    waitpid(pid, &status, 0);
-    setup_signals();
-    return (exit_status(status));
+int	exec_forked(t_ast *node, t_shell *shell)
+{
+	pid_t	pid;
+	int		status;
+
+	pid = fork();
+	if (pid < 0)
+		return (-1);
+	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		exec_simple(node, shell);
+		exit(127);
+	}
+	waitpid(pid, &status, 0);
+	setup_signals();
+	return (exit_status(status));
+}
+
+int	exec_ast_tree(t_ast *node, t_shell *shell)
+{
+	int	result;
+
+	if (!node)
+		return (0);
+	if (node->type == NODE_PIPE)
+	{
+		result = exec_pipe(node, shell);
+		shell->last_exit = result;
+		return (result);
+	}
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
+	result = exec_builtins(node, shell);
+	if (result != -1)
+	{
+		shell->last_exit = result;
+		return (result);
+	}
+	result = exec_forked(node, shell);
+	shell->last_exit = result;
+	return (result);
 }

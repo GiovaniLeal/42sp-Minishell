@@ -66,6 +66,7 @@ void	start_shell(t_shell *shell)
 			expand_ast(tree, shell);
 			print_ast_tree(tree, 0);
 			exec_ast_tree(tree, shell);
+			free_ast(tree);
 		}
 		free(input);
 	}

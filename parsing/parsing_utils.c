@@ -27,6 +27,7 @@ t_ast	*new_cmd_node(void)
 	node = malloc(sizeof(t_ast));
 	if (!node)
 		return (NULL);
+	printf("CRIADO: new_cmd_node %p\n", (void*)node);
 	node->type = NODE_CMD;
 	node->left = NULL;
 	node->right = NULL;

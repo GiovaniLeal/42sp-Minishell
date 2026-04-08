@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 14:57:33 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/26 19:36:50 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/08 15:47:27 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,10 +45,11 @@ void exec_simple(t_ast *node, t_shell *shell)
     path_to_exec = find_in_path(node->argv[0]);
     if (!path_to_exec)
     {
+        free_env_list(shell->lst_env);
+        free_ast(node);
         perror("command not found");
         exit(127);
     }
-
     if (node->redirs)
     {
         if (apply_redirections(node->redirs) < 0)

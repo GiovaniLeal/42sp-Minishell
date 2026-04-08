@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	g_signal = 0;
+volatile int	g_signal = 0;
 
 int	get_signal(void)
 {

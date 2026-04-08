@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 19:06:45 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/03/11 19:25:34 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/08 13:50:44 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,4 @@ char *expand_tokens(char *str, t_shell *shell);
 char    *get_key(char *str, int *index);
 char    *handle_dollar(char *res, char *str, int *index, t_shell *shell);
 char    *append_char(char *res, char add);
-int check_quote(char c);
+int     check_quote(char c);

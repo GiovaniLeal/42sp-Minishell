@@ -34,7 +34,7 @@ char *expand_tokens(char *str, t_shell *shell)
 a string do array*/
 void	expand_command(char **array, t_shell *shell)
 {
-	int	i;
+	int		i;
 	char	*new_string;
 
 	i = 0;
