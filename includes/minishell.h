@@ -26,5 +26,6 @@
 # include "environment.h"
 # include "expander.h"
 # include "signals.h"
+# include "buildtins.h"
 
 #endif
