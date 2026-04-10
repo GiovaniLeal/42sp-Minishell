@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:34:03 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/04 16:45:33 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/10 15:02:39 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,18 +69,19 @@ static	int	heredoc_loop(int fd, char *delimiter, char *filename)
 */
 int	heredoc(char *delimiter)
 {
-	int		fd;
+	int		fd_write;
+	int		fd_read;
 	char	*filename;
 
 	filename = generate_heredoc_name();
-	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	if (fd < 0)
+	fd_write = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	if (fd_write < 0)
 		return (-1);
-	if (heredoc_loop(fd, delimiter, filename) < 0)
+	if (heredoc_loop(fd_write, delimiter, filename) < 0)
 		return (-1);
-	fd = open(filename, O_RDONLY);
+	close(fd_write);
+	fd_read = open(filename, O_RDONLY);
 	unlink(filename);
 	free(filename);
-	return (fd);
+	return (fd_read);
 }
-

@@ -25,7 +25,8 @@ typedef struct s_env
 typedef struct s_shell
 {
 	t_env	*lst_env;
-	int	last_exit;
+	int		last_exit;
+	int		exit_flag;
 }	t_shell;
 
 /*environment_utils.c ------------------------------------------------------*/

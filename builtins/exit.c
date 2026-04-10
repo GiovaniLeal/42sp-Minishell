@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:54:06 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/08 15:22:22 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/10 17:09:20 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,26 +32,37 @@ int	is_numeric(char	*str)
 /* após adicionar a variavel global, alterar essa função para retornar diferentes
  valores dependendo do status true ou false
 */
-int	ft_exit(char **argv)
+int	ft_exit(char **argv, t_shell *shell)
 {
 	long	nbr;
-	//int		error;
+	int		error;
 
-	if ((!argv[1]) || (is_numeric(argv[1]) && !argv[2]))
+	if ((!argv[1]))
 	{
 		ft_putstr_fd("exit\n", 2);
-		exit(0);
+		shell->exit_flag = 1;
+		shell->last_exit = 0;
+		return (0);
 	}
 	if (!is_numeric(argv[1]))
 	{
-		//error_msg(argv[0], argv[1], "numeric argument required", 2);
-		exit(2);
+		ft_putstr_fd("exit\n", 2);
+		shell->exit_flag = 1;
+		shell->last_exit = 0;
+		return (error_msg(argv[0], argv[1], "numeric argument required", 2));
 	}
 	if (argv[2])
+		return (error_msg(argv[0], NULL, "too many arguments", 1));
+	nbr = ft_atol_safe(argv[1], &error);
+	if (error)
 	{
-		//error_msg(argv[0], NULL, "too many arguments", 1);
-		return (1);
+		ft_putstr_fd("exit\n", 2);
+		shell->exit_flag = 1;
+		shell->last_exit = 2;
+		return(error_msg(argv[0], argv[1], "numeric argument required", 2));		
 	}
-	nbr = 0; // teste = ft_atol_safe(argv[1], &error);
-	exit((unsigned char)nbr);
+	ft_putstr_fd("exit\n", 2);
+	shell->exit_flag = 1;
+	shell->last_exit = (unsigned char)nbr;
+	return((unsigned char)nbr);
 }

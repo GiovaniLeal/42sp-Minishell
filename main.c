@@ -69,6 +69,8 @@ void	start_shell(t_shell *shell)
 			free_ast(tree);
 		}
 		free(input);
+		if (shell->exit_flag)
+			break;
 	}
 }
 
@@ -77,7 +79,6 @@ void	start_shell(t_shell *shell)
 /* ************************************************************************** */
 
 // Melhoria - Não executa comando no caso de rodar o programa já com argumentos.
-
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -88,9 +89,10 @@ int	main(int argc, char **argv, char **envp)
 	using_history();
 	setup_signals();
 	shell.lst_env = add_env(envp);
+	shell.exit_flag = 0;
 	shell.last_exit = 0;
 	start_shell(&shell);
 	free_env_list(shell.lst_env);
 	rl_clear_history();
-	return (0);
+	return (shell.last_exit);
 }

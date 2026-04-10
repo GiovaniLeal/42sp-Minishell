@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	get_signal(void);
+int	    get_signal(void);
 void	reset_signal(void);
 void	setup_signals(void);
 void	setup_exec_signals(void);

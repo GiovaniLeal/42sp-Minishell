@@ -44,7 +44,6 @@ void	free_ast(t_ast *node)
 {
 	if (!node)
 		return ;
-	printf("LIBERADO: free_ast %p\n", (void*)node);
 	free_ast(node->left);
 	free_ast(node->right);
 	free_argv(node->argv);

@@ -21,9 +21,9 @@ static void exec_pipe_left(int *pipefd, t_ast *node, t_shell *shell)
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[1]);
 	exec_ast_tree(node->left, shell);
-	free_ast(node->left);
+	free_ast(node);
 	free_env_list(shell->lst_env);
-	exit(1);
+	exit(shell->last_exit);
 }
 
 static void exec_pipe_right(int *pipefd, t_ast *node, t_shell *shell)
@@ -32,9 +32,9 @@ static void exec_pipe_right(int *pipefd, t_ast *node, t_shell *shell)
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
 	exec_ast_tree(node->right, shell);
-	free_ast(node->right);
+	free_ast(node);
 	free_env_list(shell->lst_env);
-	exit(1);
+	exit(shell->last_exit);
 }
 
 /* Fecha o pipefd corretamente em caso de erro
