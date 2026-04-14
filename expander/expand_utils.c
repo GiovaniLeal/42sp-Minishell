@@ -6,12 +6,11 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 12:45:41 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/08 13:57:03 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/14 16:57:35 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 /*get_key = */
 char    *get_key(char *str, int *index)
@@ -28,36 +27,40 @@ char    *get_key(char *str, int *index)
 }
 
 /*handle_dollar*/
-char *handle_dollar(char *res, char *str, int *index, t_shell *shell)
+char	*handle_dollar(char *res, char *str, int *index, t_shell *shell)
 {
 	char	*key;
 	char	*value;
+	char	*exit_str;
 	char	*new;
 
 	(*index)++; // pula o '$'
-
 	if (str[*index] == '?')
 	{
 		(*index)++;
+		exit_str = ft_itoa(shell->last_exit);
+		new = ft_strjoin(res, exit_str);
+		free(exit_str);
 		free(res);
-		return (ft_itoa(shell->last_exit));
+		return (new);
 	}
-
 	key = get_key(str, index);
+	if (key[0] == '\0')
+	{
+		free(key);
+		return (append_char(res, '$'));
+	}
 	value = get_environment(shell->lst_env, key);
-
 	free(key);
-
 	if (!value)
-		return (res); // variável inexistente = vazio (bash-like)
-
+		return (res);
 	new = ft_strjoin(res, value);
 	free(res);
 	return (new);
 }
 
 /*Concatena caractere a uma string*/
-char *append_char(char *res, char add)
+char	*append_char(char *res, char add)
 {
 	char tmp[2];
 	char *final_str;

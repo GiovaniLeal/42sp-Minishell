@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:54:06 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/10 17:09:20 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/14 15:29:54 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,28 +29,31 @@ int	is_numeric(char	*str)
 	}
 	return (1);
 }
-/* após adicionar a variavel global, alterar essa função para retornar diferentes
- valores dependendo do status true ou false
-*/
+
+static int	no_exit_status(t_shell *shell)
+{
+	ft_putstr_fd("exit\n", 2);
+	shell->exit_flag = 1;
+	return (shell->last_exit);
+}
+
+static int	no_numeric_status(t_shell *shell, char **argv)
+{
+	ft_putstr_fd("exit\n", 2);
+	shell->exit_flag = 1;
+	shell->last_exit = 0;
+	return (error_msg(argv[0], argv[1], "numeric argument required", 2));
+}
+
 int	ft_exit(char **argv, t_shell *shell)
 {
 	long	nbr;
 	int		error;
 
 	if ((!argv[1]))
-	{
-		ft_putstr_fd("exit\n", 2);
-		shell->exit_flag = 1;
-		shell->last_exit = 0;
-		return (0);
-	}
+		return (no_exit_status(shell));
 	if (!is_numeric(argv[1]))
-	{
-		ft_putstr_fd("exit\n", 2);
-		shell->exit_flag = 1;
-		shell->last_exit = 0;
-		return (error_msg(argv[0], argv[1], "numeric argument required", 2));
-	}
+		return (no_numeric_status(shell, argv));
 	if (argv[2])
 		return (error_msg(argv[0], NULL, "too many arguments", 1));
 	nbr = ft_atol_safe(argv[1], &error);
@@ -59,10 +62,11 @@ int	ft_exit(char **argv, t_shell *shell)
 		ft_putstr_fd("exit\n", 2);
 		shell->exit_flag = 1;
 		shell->last_exit = 2;
-		return(error_msg(argv[0], argv[1], "numeric argument required", 2));		
+		return (error_msg(argv[0], argv[1], 
+				"numeric argument required", 2));		
 	}
 	ft_putstr_fd("exit\n", 2);
 	shell->exit_flag = 1;
 	shell->last_exit = (unsigned char)nbr;
-	return((unsigned char)nbr);
+	return ((unsigned char)nbr);
 }
