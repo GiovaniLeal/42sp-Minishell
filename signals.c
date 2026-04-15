@@ -26,7 +26,7 @@ void	reset_signal(void)
 
 static void	handle_sigint(int sig)
 {
-	ssize_t re;
+	ssize_t	re;
 
 	(void)sig;
 	g_signal = 130;

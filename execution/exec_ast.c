@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/08 14:04:58 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/15 16:00:15 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,10 @@ int	exec_ast_tree(t_ast *node, t_shell *shell)
 	}
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	result = exec_builtins(node, shell);
+	result = its_builtin(node);
 	if (result != -1)
 	{
+		result = exec_builtin_redirs(node, shell);
 		shell->last_exit = result;
 		return (result);
 	}

@@ -33,7 +33,7 @@ void	add_environment(t_env **lst, t_env *node)
 /* Cria um novo ambiente(nó) e faz o parsing da str recebida */
 t_env	*create_environment(char *str)
 {
-	int	index;
+	int		index;
 	t_env	*new_node;
 
 	index = 0;
@@ -66,7 +66,7 @@ t_env	*create_environment(char *str)
 lista de enviromets*/
 t_env	*add_env(char **envp)
 {
-	int	i;
+	int		i;
 	t_env	*list_environments;
 	t_env	*new_env;
 

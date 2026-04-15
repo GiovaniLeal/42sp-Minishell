@@ -13,7 +13,7 @@
 #include "minishell.h"
 
 /* Percorre a str de token e retorna uma nova string com a expansão correta*/
-char *expand_tokens(char *str, t_shell *shell)
+char	*expand_tokens(char *str, t_shell *shell)
 {
 	int		i;
 	char	*result;

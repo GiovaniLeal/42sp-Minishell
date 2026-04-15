@@ -10,16 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENVIROMENT_H
-# define ENVIROMENT_H
+#ifndef ENVIRONMENT_H
+# define ENVIRONMENT_H
+
 # include "minishell.h"
 
 /*Estrutura da lista de ambientes recebidos por envp*/
 typedef struct s_env
 {
-	char	*key;
-	char	*value;
-	struct  s_env	*next;
+	char			*key;
+	char			*value;
+	struct s_env	*next;
 }	t_env;
 /* Essa estrutura é responsável por armazenar o status do ultimo comando */
 typedef struct s_shell
@@ -32,7 +33,7 @@ typedef struct s_shell
 /*environment_utils.c ------------------------------------------------------*/
 char	*str_join_three(char *key, char c, char *value);
 void	free_env_array(char **env);
-int	env_size(t_env *lst_env);
+int		env_size(t_env *lst_env);
 char	**env_to_array(t_env *env);
 char	*get_environment(t_env *env, char *key);
 void	free_env_list(t_env *env_lst);

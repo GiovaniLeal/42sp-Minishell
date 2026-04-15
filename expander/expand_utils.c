@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 12:45:41 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/15 14:16:14 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:40:15 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*get_key = */
 char	*get_key(char *str, int *index)
 {
-	char *key;
+	char	*key;
 
 	key = ft_strdup("");
 	while (str[*index] && (ft_isalnum(str[*index]) || str[*index] == '_'))
@@ -79,7 +79,7 @@ char	*append_char(char *res, char add)
 }
 
 /* Para checar se o caractere é aspas duplas ou simples*/
-int check_quote(char c)
+int	check_quote(char c)
 {
 	if (c == '\'')
 		return (STATE_IN_SQUOTE);

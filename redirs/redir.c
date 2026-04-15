@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 15:21:10 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/03/31 16:04:07 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/15 15:48:48 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,28 @@ int	apply_redirections(t_redir *redir)
 		redir = redir->next;
 	}
 	return (0);
+}
+
+int	exec_builtin_redirs(t_ast *node, t_shell *shell)
+{
+	int	saved_in;
+	int	saved_out;
+	int	result;
+
+	saved_in = dup(STDIN_FILENO);
+	saved_out = dup(STDOUT_FILENO);
+	if (node->redirs && apply_redirections(node->redirs) < 0)
+	{
+		dup2(saved_in, STDIN_FILENO);
+		dup2(saved_out, STDOUT_FILENO);
+		close(saved_in);
+		close(saved_out);
+		return (1);
+	}
+	result = exec_builtins(node, shell);
+	dup2(saved_in, STDIN_FILENO);
+	dup2(saved_out, STDOUT_FILENO);
+	close(saved_in);
+	close(saved_out);
+	return (result);
 }

@@ -15,7 +15,7 @@
 /* Após a criação do filho esquerdo, ele não vai ler no pipe apenas escrever
  dup2(oldfd, newfd) faz o STDOUT_FILENO apontar para pipefd[1]
  Quando o comando escrever no stdout, na verdade estara escrevendo dentro do pipe*/
-static void exec_pipe_left(int *pipefd, t_ast *node, t_shell *shell)
+static void	exec_pipe_left(int *pipefd, t_ast *node, t_shell *shell)
 {
 	close(pipefd[0]);
 	dup2(pipefd[1], STDOUT_FILENO);
@@ -26,7 +26,7 @@ static void exec_pipe_left(int *pipefd, t_ast *node, t_shell *shell)
 	exit(shell->last_exit);
 }
 
-static void exec_pipe_right(int *pipefd, t_ast *node, t_shell *shell)
+static void	exec_pipe_right(int *pipefd, t_ast *node, t_shell *shell)
 {
 	close(pipefd[1]);
 	dup2(pipefd[0], STDIN_FILENO);
