@@ -60,7 +60,7 @@ int	exec_ast_tree(t_ast *node, t_shell *shell)
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
 	result = its_builtin(node);
-	if (result != -1)
+	if (result == 1)
 	{
 		result = exec_builtin_redirs(node, shell);
 		shell->last_exit = result;

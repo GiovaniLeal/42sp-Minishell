@@ -53,7 +53,12 @@ void	exec_simple(t_ast *node, t_shell *shell)
 	if (node->redirs)
 	{
 		if (apply_redirections(node->redirs) < 0)
+		{
+			ft_printf("EXISTE REDIR");
 			exit(1);
+		}
+		else
+			ft_printf("nao existe redir");
 	}
 
 	execute_child(path_to_exec, node->argv, shell->lst_env);
