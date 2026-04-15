@@ -6,14 +6,14 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 12:45:41 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/14 16:57:35 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/15 14:16:14 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /*get_key = */
-char    *get_key(char *str, int *index)
+char	*get_key(char *str, int *index)
 {
 	char *key;
 
@@ -26,23 +26,29 @@ char    *get_key(char *str, int *index)
 	return (key);
 }
 
+static char	*last_return(t_shell *shell, char *new, char *res)
+{
+	char	*exit_str;
+
+	exit_str = ft_itoa(shell->last_exit);
+	new = ft_strjoin(res, exit_str);
+	free(exit_str);
+	free(res);
+	return (new);
+}
+
 /*handle_dollar*/
 char	*handle_dollar(char *res, char *str, int *index, t_shell *shell)
 {
 	char	*key;
 	char	*value;
-	char	*exit_str;
 	char	*new;
 
 	(*index)++; // pula o '$'
 	if (str[*index] == '?')
 	{
 		(*index)++;
-		exit_str = ft_itoa(shell->last_exit);
-		new = ft_strjoin(res, exit_str);
-		free(exit_str);
-		free(res);
-		return (new);
+		return (last_return(shell, new, res));
 	}
 	key = get_key(str, index);
 	if (key[0] == '\0')
@@ -62,8 +68,8 @@ char	*handle_dollar(char *res, char *str, int *index, t_shell *shell)
 /*Concatena caractere a uma string*/
 char	*append_char(char *res, char add)
 {
-	char tmp[2];
-	char *final_str;
+	char	tmp[2];
+	char	*final_str;
 
 	tmp[0] = add;
 	tmp[1] = '\0';
