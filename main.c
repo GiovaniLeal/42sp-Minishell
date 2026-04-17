@@ -80,7 +80,7 @@ void	start_shell(t_shell *shell)
 }
 
 /* ************************************************************************** */
-/* 				MAIN                                  */
+/* 				                        MAIN                                  */
 /* ************************************************************************** */
 
 // Melhoria - Não executa comando no caso de rodar o programa já com argumentos.

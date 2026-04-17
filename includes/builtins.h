@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:25:56 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/15 16:00:40 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/17 15:51:09 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,9 @@ int		exec_cd(char **argv, t_env *env);
 
 int		exec_env(char **argv, t_env *env);
 
-int		exec_export(char **argv, t_shell *env);
+int		exec_export(char **argv, t_shell *shell);
 int		is_valid_arg(char *str);
+int		exec_unset(char **argv, t_shell *shell);
 
 int		display_export(t_env *env);
 void	sort_arr(char **export_arr);

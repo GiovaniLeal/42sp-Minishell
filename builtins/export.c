@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 15:55:37 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/07 00:08:52 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/17 14:14:51 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ int	exec_export(char **argv, t_shell *shell)
 		{
 			ft_printf("export: `%s': not a valid identifier\n", argv[i]);
 			i++;
-			continue;
+			continue ;
 		}
 		node = find_in_lst(argv[i], shell->lst_env);
 		if (node)

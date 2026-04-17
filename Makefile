@@ -62,6 +62,7 @@ SRC :=  main.c \
 	$(BUILTINS_DIR)/env.c \
 	$(BUILTINS_DIR)/export.c \
 	$(BUILTINS_DIR)/export_display.c \
+	$(BUILTINS_DIR)/unset.c \
 	$(UTILS_DIR)/ft_atol_safe.c \
 	$(UTILS_DIR)/error.c \
  	$(EXPANDER_DIR)/expand.c \
