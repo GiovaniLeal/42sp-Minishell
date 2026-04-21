@@ -111,9 +111,9 @@ char	*get_environment(t_env *env, char *key)
 /*funcao auxiliar que limpa toda a memoria de um nó de env*/
 void	free_env_list(t_env *env_lst)
 {
-	t_env *temp;
+	t_env	*temp;
 
-	while(env_lst)
+	while (env_lst)
 	{
 		temp = env_lst->next;
 		free(env_lst->key);

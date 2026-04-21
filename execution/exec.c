@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 14:57:33 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/15 14:39:39 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/21 17:36:43 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,19 +47,13 @@ void	exec_simple(t_ast *node, t_shell *shell)
 	{
 		free_env_list(shell->lst_env);
 		free_ast(node);
-		perror("command not found");
+		ft_printf("minishell: command not found\n");
 		exit(127);
 	}
 	if (node->redirs)
 	{
 		if (apply_redirections(node->redirs) < 0)
-		{
-			ft_printf("EXISTE REDIR");
 			exit(1);
-		}
-		else
-			ft_printf("nao existe redir");
 	}
-
 	execute_child(path_to_exec, node->argv, shell->lst_env);
 }
