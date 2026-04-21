@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:23:11 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/21 17:18:44 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/21 18:20:07 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ static char	*check_absolute_path(char *cmd)
 	{
 		if (access(cmd, F_OK) != 0)
 		{
-			ft_printf("minishell: %s: No such file or directory\n", cmd);
+			ft_putstr_fd("minishell: No such file or directory\n", 2);
 			exit(127);
 		}
 		if (access(cmd, X_OK) != 0)
 		{
-			ft_printf("minishell: %s: Permission denied\n", cmd);
+			ft_putstr_fd("minishell: Permission denied\n", 2);
 			exit(126);
 		}
 		if (access(cmd, X_OK) == 0)

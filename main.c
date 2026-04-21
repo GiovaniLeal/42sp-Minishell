@@ -24,7 +24,7 @@ static t_ast	*process_input(char *input)
 	parser_tree = parser(tokens);
 	if (!parser_tree)
 	{
-		ft_printf("Syntax error\n");
+		ft_putstr_fd("Syntax error\n", 2);
 		free_token_list(tokens);
 		return (NULL);
 	}
