@@ -28,10 +28,6 @@ static t_ast	*process_input(char *input)
 		free_token_list(tokens);
 		return (NULL);
 	}
-	printf("========= LEXER LIST ==========\n");
-	print_tokens(tokens);
-	printf("========= PARSER ============\n");
-	print_ast_tree(parser_tree, 0);
 	free_token_list(tokens);
 	return (parser_tree);
 }
@@ -49,7 +45,6 @@ static int	process_cycle(t_shell *shell, char *input)
 		return (0);
 	}
 	expand_ast(tree, shell);
-	print_ast_tree(tree, 0);
 	exec_ast_tree(tree, shell);
 	free_ast(tree);
 	return (0);
