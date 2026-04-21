@@ -22,7 +22,7 @@ char	*expand_tokens(char *str, t_shell *shell)
 	result = ft_strdup("");
 	while (str[i])
 	{
-		if (str[i] == '$')
+		if (str[i] == '$' && str[0] != '\'')
 			result = handle_dollar(result, str, &i, shell);
 		else
 			result = append_char(result, str[i++]);
