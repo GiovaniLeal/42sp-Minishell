@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 12:45:41 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/22 13:47:04 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/22 15:06:35 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ char	*get_key(char *str, int *index)
 	return (key);
 }
 
-static char	*last_return(t_shell *shell, char *new, char *res)
+static char	*last_return(t_shell *shell, char *res)
 {
 	char	*exit_str;
+	char	*new;
 
 	exit_str = ft_itoa(shell->last_exit);
 	new = ft_strjoin(res, exit_str);
@@ -44,22 +45,29 @@ char	*handle_dollar(char *res, char *str, int *index, t_shell *shell)
 	char	*value;
 	char	*new;
 
-	(*index)++; // pula o '$'
+	(*index)++;
+
 	if (str[*index] == '?')
 	{
 		(*index)++;
-		return (last_return(shell, new, res));
+		return (last_return(shell, res));
 	}
-	key = get_key(str, index);
-	if (key[0] == '\0')
+
+	// trata casos tipo $- ou $"
+	if (!ft_isalnum(str[*index]) && str[*index] != '_')
 	{
-		free(key);
-		return (append_char(res, '$'));
+		res = append_char(res, '$');
+		return (res);
 	}
+
+	key = get_key(str, index);
+
 	value = get_environment(shell->lst_env, key);
 	free(key);
+
 	if (!value)
 		return (res);
+
 	new = ft_strjoin(res, value);
 	free(res);
 	return (new);

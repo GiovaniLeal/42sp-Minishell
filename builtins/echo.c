@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 15:13:54 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/14 15:56:49 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/22 14:53:26 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,24 @@ static int	is_n_option(char *str)
 	return (str[i] == '\0');
 }
 
-static void	print_without_quotes(char *str)
-{
-	int		i;
-	char	open_quote;
+// static void	print_without_quotes(char *str)
+// {
+// 	int		i;
+// 	char	open_quote;
 
-	open_quote = 0;
-	i = 0;
-	while (str[i])
-	{
-		if (!open_quote && (str[i] == '\'' || str[i] == '"'))
-			open_quote = str[i];
-		else if (open_quote && str[i] == open_quote)
-			open_quote = 0;
-		else
-			ft_printf("%c", str[i]);
-		i++;
-	}
-}
+// 	open_quote = 0;
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (!open_quote && (str[i] == '\'' || str[i] == '"'))
+// 			open_quote = str[i];
+// 		else if (open_quote && str[i] == open_quote)
+// 			open_quote = 0;
+// 		else
+// 			ft_printf("%c", str[i]);
+// 		i++;
+// 	}
+// }
 
 int	exec_echo(char **str_array)
 {
@@ -61,7 +61,7 @@ int	exec_echo(char **str_array)
 	}
 	while (str_array[i])
 	{
-		print_without_quotes(str_array[i]);
+		ft_printf("%s", str_array[i]);
 		if (str_array[i + 1])
 			ft_printf(" ");
 		i++;

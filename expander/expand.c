@@ -17,7 +17,6 @@ char *expand_tokens(char *str, t_shell *shell)
 {
 	int		i;
 	int		state;
-	int		prev_state;
 	char	*result;
 
 	i = 0;
@@ -26,19 +25,32 @@ char *expand_tokens(char *str, t_shell *shell)
 
 	while (str[i])
 	{
-		prev_state = state;
-		state = change_quote_status(state, str[i]);
-		if (is_quote_to_remove(prev_state, state, str[i]))
+		// SINGLE QUOTE
+		if (str[i] == '\'' && state != STATE_IN_DQUOTE)
 		{
-			i++;
+			state = (state == STATE_IN_SQUOTE) ? STATE_GENERAL : STATE_IN_SQUOTE;
+			i++; // remove a aspa estrutural
 			continue;
 		}
+
+		// DOUBLE QUOTE
+		if (str[i] == '"' && state != STATE_IN_SQUOTE)
+		{
+			state = (state == STATE_IN_DQUOTE) ? STATE_GENERAL : STATE_IN_DQUOTE;
+			i++; // remove a aspa estrutural
+			continue;
+		}
+
+		// EXPANSÃO
 		if (str[i] == '$' && state != STATE_IN_SQUOTE)
 		{
 			result = handle_dollar(result, str, &i, shell);
 			continue;
 		}
-		result = append_char(result, str[i++]);
+
+		// CARACTERE NORMAL (inclui aspas "inofensivas")
+		result = append_char(result, str[i]);
+		i++;
 	}
 	return (result);
 }
