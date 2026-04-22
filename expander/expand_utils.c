@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 12:45:41 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/15 14:40:15 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/22 13:47:04 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,27 @@ char	*append_char(char *res, char add)
 }
 
 /* Para checar se o caractere é aspas duplas ou simples*/
-int	check_quote(char c)
+int	change_quote_status(int state, char c)
 {
-	if (c == '\'')
-		return (STATE_IN_SQUOTE);
-	if (c == '\"')
-		return (STATE_IN_DQUOTE);
-	return (STATE_GENERAL);
+	if (c == '\'' && state != STATE_IN_DQUOTE)
+	{
+		if (state == STATE_IN_SQUOTE)
+			return (STATE_GENERAL);
+		else
+			return (STATE_IN_SQUOTE);
+	}
+	if (c == '\"' && state != STATE_IN_SQUOTE)
+	{
+		if (state == STATE_IN_DQUOTE)
+			return (STATE_GENERAL);
+		else
+			return (STATE_IN_DQUOTE);
+	}
+	return (state);
+}
+int	is_quote_to_remove(int prev_state, int new_state, char c)
+{
+	if ((c == '\'' || c == '\"') && prev_state != new_state)
+		return (1);
+	return (0);
 }

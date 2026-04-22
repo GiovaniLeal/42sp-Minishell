@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:54:06 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/21 18:52:23 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/22 13:29:45 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,14 +32,12 @@ int	is_numeric(char	*str)
 
 static int	no_exit_status(t_shell *shell)
 {
-	ft_putstr_fd("exit\n", 2);
 	shell->exit_flag = 1;
 	return (shell->last_exit);
 }
 
 static int	no_numeric_status(t_shell *shell, char **argv)
 {
-	ft_putstr_fd("exit\n", 2);
 	shell->exit_flag = 1;
 	shell->last_exit = 0;
 	return (error_msg(argv[0], argv[1], "numeric argument required", 2));
@@ -59,13 +57,11 @@ int	ft_exit(char **argv, t_shell *shell)
 	nbr = ft_atol_safe(argv[1], &error);
 	if (error)
 	{
-		ft_putstr_fd("exit\n", 2);
 		shell->exit_flag = 1;
 		shell->last_exit = 2;
 		return (error_msg(argv[0], argv[1], 
 				"numeric argument required", 2));		
 	}
-	ft_putstr_fd("exit\n", 2);
 	shell->exit_flag = 1;
 	shell->last_exit = (unsigned char)nbr;
 	return ((unsigned char)nbr);

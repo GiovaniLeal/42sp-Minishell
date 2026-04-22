@@ -65,8 +65,9 @@ SRC :=  main.c \
 	$(BUILTINS_DIR)/unset.c \
 	$(UTILS_DIR)/ft_atol_safe.c \
 	$(UTILS_DIR)/error.c \
+	$(EXPANDER_DIR)/expand_utils.c \
  	$(EXPANDER_DIR)/expand.c \
- 	$(EXPANDER_DIR)/expand_utils.c
+ 	
 
 OBJS := $(SRC:.c=.o)
 

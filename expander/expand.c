@@ -13,19 +13,32 @@
 #include "minishell.h"
 
 /* Percorre a str de token e retorna uma nova string com a expansão correta*/
-char	*expand_tokens(char *str, t_shell *shell)
+char *expand_tokens(char *str, t_shell *shell)
 {
 	int		i;
+	int		state;
+	int		prev_state;
 	char	*result;
 
 	i = 0;
+	state = STATE_GENERAL;
 	result = ft_strdup("");
+
 	while (str[i])
 	{
-		if (str[i] == '$' && str[0] != '\'')
+		prev_state = state;
+		state = change_quote_status(state, str[i]);
+		if (is_quote_to_remove(prev_state, state, str[i]))
+		{
+			i++;
+			continue;
+		}
+		if (str[i] == '$' && state != STATE_IN_SQUOTE)
+		{
 			result = handle_dollar(result, str, &i, shell);
-		else
-			result = append_char(result, str[i++]);
+			continue;
+		}
+		result = append_char(result, str[i++]);
 	}
 	return (result);
 }
