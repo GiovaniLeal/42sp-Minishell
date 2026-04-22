@@ -55,6 +55,19 @@ char *expand_tokens(char *str, t_shell *shell)
 	return (result);
 }
 
+void	expand_redirs(t_redir	*redirs, t_shell *shell)
+{
+	char	*new_file;
+
+	while (redirs)
+	{
+		new_file = expand_tokens(redirs->file, shell);
+		free(redirs->file);
+		redirs->file = new_file;
+		redirs = redirs->next;
+	}
+}
+
 /*Percorre o array, chama funcao que expande o token da string e realoca 
 a string do array*/
 void	expand_command(char **array, t_shell *shell)
@@ -81,7 +94,7 @@ void	expand_ast(t_ast *node, t_shell *shell)
 	if (node->type == NODE_CMD)
 	{
 		expand_command(node->argv, shell);
-		//expand_redirs(node->redirs, shell);
+		expand_redirs(node->redirs, shell);
 	}
 	expand_ast(node->left, shell);
 	expand_ast(node->right, shell);

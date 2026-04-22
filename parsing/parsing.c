@@ -74,22 +74,26 @@ t_ast	*parse_command(t_token **current_token)
 	command = new_cmd_node();
 	if (!command)
 		return (NULL);
-	while (*current_token && (*current_token)->type == T_WORD)
+	while (*current_token && ((*current_token)->type == T_WORD
+			|| is_redir((*current_token)->type)))
 	{
-		if (!add_arg(command, (*current_token)->value))
-			return (free_ast(command), NULL);
-		*current_token = (*current_token)->next;
-	}
-	while (*current_token && is_redir((*current_token)->type))
-	{
-		if (!(*current_token)->next
-			|| (*current_token)->next->type != T_WORD)
-			return (free_ast(command), NULL);
-		if (!add_redir(command,
-				(*current_token)->type,
-				(*current_token)->next->value))
-			return (free_ast(command), NULL);
-		*current_token = (*current_token)->next->next;
+		if (*current_token && (*current_token)->type == T_WORD)
+		{
+			if (!add_arg(command, (*current_token)->value))
+				return (free_ast(command), NULL);
+			*current_token = (*current_token)->next;
+		}
+		else
+		{
+			if (!(*current_token)->next
+				|| (*current_token)->next->type != T_WORD)
+				return (free_ast(command), NULL);
+			if (!add_redir(command,
+					(*current_token)->type,
+					(*current_token)->next->value))
+				return (free_ast(command), NULL);
+			*current_token = (*current_token)->next->next;
+		}
 	}
 	if (!command->argv)
 		return (free_ast(command), NULL);
