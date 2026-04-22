@@ -91,7 +91,10 @@ int	exec_cd(char **argv, t_env *env)
 	char	*old_path;
 
 	if (argv[1] && argv[2])
-		return (ft_printf("cd : too many arguments\n"), 1);
+	{
+		ft_putstr_fd(" too many arguments", 2);
+		return (1);
+	}
 	path = resolve_cd_path(argv, env);
 	if (!path)
 		return (1);
