@@ -22,6 +22,7 @@ ENVIRONMENT_DIR := environment
 EXPANDER_DIR := expander
 BUILTINS_DIR := builtins
 UTILS_DIR := utils
+SRC_DIR := src
 
 # **************************************************************************** #
 #                                   LIBFT                                      #
@@ -30,43 +31,44 @@ LIBFT_DIR   := libft
 LIBFT_INC   := $(LIBFT_DIR)/includes
 LIBFT       := $(LIBFT_DIR)/libft.a
 INCLUDES    := -I$(INC_DIR) -I$(LIBFT_INC)
+SRC         := $(SRC_DIR)
 
 # **************************************************************************** #
 #                                   SOURCES                                    #
 # **************************************************************************** #
 SRC :=  main.c \
 	signals.c \
-	$(LEXER_DIR)/lexer.c \
-	$(LEXER_DIR)/lexer_list.c \
-	$(LEXER_DIR)/lexer_utils.c \
-	$(LEXER_DIR)/lexer_tester.c \
-	$(PARSING_DIR)/parsing.c \
-	$(PARSING_DIR)/parsing_utils.c \
-	$(PARSING_DIR)/parsing_free.c \
-	$(PARSING_DIR)/parsing_tester.c \
-	$(EXECUTION_DIR)/exec_ast.c \
-	$(EXECUTION_DIR)/exec_pipes.c \
-	$(EXECUTION_DIR)/exec.c \
-	$(EXECUTION_DIR)/path.c \
-	$(REDIRS_DIR)/redir.c \
-	$(REDIRS_DIR)/heredoc_utils.c \
-	$(REDIRS_DIR)/heredoc.c \
-	$(UTILS_DIR)/free.c \
-	$(ENVIRONMENT_DIR)/environment.c \
-	$(ENVIRONMENT_DIR)/environment_utils.c \
-	$(BUILTINS_DIR)/builtins.c \
-	$(BUILTINS_DIR)/exit.c \
-	$(BUILTINS_DIR)/echo.c \
-	$(BUILTINS_DIR)/pwd.c \
-	$(BUILTINS_DIR)/cd.c \
-	$(BUILTINS_DIR)/env.c \
-	$(BUILTINS_DIR)/export.c \
-	$(BUILTINS_DIR)/export_display.c \
-	$(BUILTINS_DIR)/unset.c \
-	$(UTILS_DIR)/ft_atol_safe.c \
-	$(UTILS_DIR)/error.c \
-	$(EXPANDER_DIR)/expand_utils.c \
- 	$(EXPANDER_DIR)/expand.c \
+	$(SRC)/$(LEXER_DIR)/lexer.c \
+	$(SRC)/$(LEXER_DIR)/lexer_list.c \
+	$(SRC)/$(LEXER_DIR)/lexer_utils.c \
+	$(SRC)/$(LEXER_DIR)/lexer_tester.c \
+	$(SRC)/$(PARSING_DIR)/parsing.c \
+	$(SRC)/$(PARSING_DIR)/parsing_utils.c \
+	$(SRC)/$(PARSING_DIR)/parsing_free.c \
+	$(SRC)/$(PARSING_DIR)/parsing_tester.c \
+	$(SRC)/$(EXECUTION_DIR)/exec_ast.c \
+	$(SRC)/$(EXECUTION_DIR)/exec_pipes.c \
+	$(SRC)/$(EXECUTION_DIR)/exec.c \
+	$(SRC)/$(EXECUTION_DIR)/path.c \
+	$(SRC)/$(REDIRS_DIR)/redir.c \
+	$(SRC)/$(REDIRS_DIR)/heredoc_utils.c \
+	$(SRC)/$(REDIRS_DIR)/heredoc.c \
+	$(SRC)/$(UTILS_DIR)/free.c \
+	$(SRC)/$(ENVIRONMENT_DIR)/environment.c \
+	$(SRC)/$(ENVIRONMENT_DIR)/environment_utils.c \
+	$(SRC)/$(BUILTINS_DIR)/builtins.c \
+	$(SRC)/$(BUILTINS_DIR)/exit.c \
+	$(SRC)/$(BUILTINS_DIR)/echo.c \
+	$(SRC)/$(BUILTINS_DIR)/pwd.c \
+	$(SRC)/$(BUILTINS_DIR)/cd.c \
+	$(SRC)/$(BUILTINS_DIR)/env.c \
+	$(SRC)/$(BUILTINS_DIR)/export.c \
+	$(SRC)/$(BUILTINS_DIR)/export_display.c \
+	$(SRC)/$(BUILTINS_DIR)/unset.c \
+	$(SRC)/$(UTILS_DIR)/ft_atol_safe.c \
+	$(SRC)/$(UTILS_DIR)/error.c \
+	$(SRC)/$(EXPANDER_DIR)/expand_utils.c \
+ 	$(SRC)/$(EXPANDER_DIR)/expand.c \
  	
 
 OBJS := $(SRC:.c=.o)
@@ -111,6 +113,5 @@ fclean: clean
 re: fclean all
 
 valgrind:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline.sup ./minishell
-
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=yes --suppressions=readline/readline.sup ./minishell
 .PHONY: all clean fclean re banner

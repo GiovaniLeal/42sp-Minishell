@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/31 14:25:56 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/17 15:51:09 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/22 16:57:16 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,41 @@
 
 # include "minishell.h"
 
-int		exec_builtins(t_ast *node, t_shell *shell);
-int		its_builtin(t_ast *node);
-int		ft_exit(char **argv, t_shell *shell);
-int		is_numeric(char	*str);
+/* ************************************************************************** */
+/*          Function declarations and their respective .c files.              */
+/* ************************************************************************** */
 
-int		exec_echo(char **str_array);
-int		exec_pwd(char **argv);
-int		exec_cd(char **argv, t_env *env);
+// -------------------------------------------------> builtins.c
+int			exec_builtins(t_ast *node, t_shell *shell);
+int			its_builtin(t_ast *node);
 
+// -------------------------------------------------> cd.c
+int			exec_cd(char **argv, t_env *env);
 
-int		exec_env(char **argv, t_env *env);
+// -------------------------------------------------> echo.c
+int			exec_echo(char **str_array);
 
-int		exec_export(char **argv, t_shell *shell);
-int		is_valid_arg(char *str);
-int		exec_unset(char **argv, t_shell *shell);
+// -------------------------------------------------> env.c
+int			exec_env(char **argv, t_env *env);
 
-int		display_export(t_env *env);
-void	sort_arr(char **export_arr);
-void	print_env(char	**env_arr);
-t_env	*find_in_lst(char *str, t_env *env);
-void	export_update(t_env *node, char *str);
+// -------------------------------------------------> exit.c
+int			ft_exit(char **argv, t_shell *shell);
+int			is_numeric(char	*str);
 
-int		error_msg(char *cmd, char *detail, char *msg, int error_nbr);
+// -------------------------------------------------> export.c
+int			exec_export(char **argv, t_shell *shell);
+int			is_valid_arg(char *str);
+t_env		*find_in_lst(char *str, t_env *env);
+// -------------------------------------------------> export_display.c
+void		export_update(t_env *node, char *str);
+void		print_env(char	**env_arr);
+void		sort_arr(char **export_arr);
+int			display_export(t_env *env);
+
+// -------------------------------------------------> pwd.c
+int			exec_pwd(char **argv);
+
+// -------------------------------------------------> unset.c
+int			exec_unset(char **argv, t_shell *shell);
 
 #endif

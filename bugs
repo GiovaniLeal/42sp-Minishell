@@ -1,6 +1,0 @@
-
-
--- Testes que estão falhando 
-1 - Comando [ls | grep main] = still reachable: 4,642 bytes in 218 blocks 
-2 - Conferir status do ultimo comando feito.
-3 - comando exit com ate 8 numeros // revisar comando exit

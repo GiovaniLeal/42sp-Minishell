@@ -15,24 +15,19 @@
 # define PROMPT "minishell$ "
 
 /* ************************************************************************** */
-/*  		     TOKEN PART - ENUM AND LIST	        	        */
+/*         		      STRUCTS   	                      */
+/* T_TOKEN = Storages all comands in a list of tokens		        */
+/* T_STATE = For control of the literal quotes                                */
+/* T_TOKEN_TYPE = Types of comands tokens			        */
 /* ************************************************************************** */
-/* 							        */
-/* 	implementacao do lexer quanto a aspas simples e duplas	        */
+
 typedef enum e_state
 {
 	STATE_GENERAL,
 	STATE_IN_SQUOTE,
 	STATE_IN_DQUOTE
 }	t_state;
-/* 							        */
-/*   Esse enum representa os operadores(tokens) esperados do nosso shell.     */
-/*EX.:		T_WORD :     "echo " 		                  */
-/*EX.:		T_PIPE :     " |   " 	         		        */
-/*EX.:		T_REDIR_IN : " <   " 		        	        */
-/*EX.:		T_REDIR_OUT: " >   " 			        */
-/*EX.:		T_APPEND :   " >>  " 		                  */
-/*EX.:		T_HEREDOC :  " <<  "		                  */
+
 typedef enum e_token_type
 {
 	T_WORD,
@@ -43,13 +38,15 @@ typedef enum e_token_type
 	T_HEREDOC
 }	t_token_type;
 
-/* Armazenamos todos os comandos recebidos na struct abaixo em lista        */
 typedef struct s_token
 {
 	char				*value;
 	t_token_type		type;
 	struct s_token		*next;	
 }	t_token;
+
+/* ************************************************************************** */
+/*          Function declarations and their respective .c files.              */
 /* ************************************************************************** */
 
 /* lexer.c -------------------------------------------------------------------*/
@@ -65,9 +62,5 @@ int		state_status(char c);
 int		is_operator(char c);
 int		is_white_space(char c);
 char	*skip_spaces(char *str);
-
-/* EXCLUIR ANTES DO ENVIO - lexer_tester.c ----------------------------------*/
-void	print_tokens(t_token *tokens_list);
-char	*token_type_to_str(t_token_type type);
 
 #endif

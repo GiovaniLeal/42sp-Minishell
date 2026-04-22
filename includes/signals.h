@@ -10,9 +10,17 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#ifndef SIGNALS_H
+# define SIGNALS_H
 
-int	    get_signal(void);
+# include "minishell.h"
+
+/* ************************************************************************** */
+/*          Function declarations and their respective .c files.              */
+/* ************************************************************************** */
+// ---------------------------------------------------------- signals.c
+int		get_signal(void);
 void	reset_signal(void);
 void	setup_signals(void);
-void	setup_exec_signals(void);
+
+#endif

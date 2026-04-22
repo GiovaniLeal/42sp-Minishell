@@ -14,17 +14,18 @@
 # define PARSING_H
 
 /* ************************************************************************** */
-/*			PARSING ENUM AND STRUCT		        */
+/*         		      STRUCTS   	                      */
+/* T_AST = If the node is CMD use the argv and redirs                         */
+/* T_REDIR = For redirections comand control                                  */
+/* T_PARSING_TYPE = For control the type of node (PIPE OR CMD)                */
 /* ************************************************************************** */
-/*							        */
-/*   Serve para separar os nós que são do tipo pipe dos do tipo comando       */
+
 typedef enum e_parsing_type
 {
 	NODE_CMD,
 	NODE_PIPE
 }	t_parsing_type;
 
-/* 		struct de redirecionamento de comandos                    */
 typedef struct s_redir
 {
 	t_token_type	type;
@@ -33,8 +34,6 @@ typedef struct s_redir
 	struct s_redir	*next;
 }	t_redir;
 
-/*Essa é a struct da arvore sintática de comandos, caso o nó seja do tipo
-NODE_CMD utilizaremos o parametro argv e redirs */
 typedef struct s_ast
 {
 	t_parsing_type	type;
@@ -43,7 +42,9 @@ typedef struct s_ast
 	char			**argv;
 	t_redir			*redirs;
 }	t_ast;
-/*                                                                            */
+
+/* ************************************************************************** */
+/*          Function declarations and their respective .c files.              */
 /* ************************************************************************** */
 
 /* parsing.c -----------------------------------------------------------------*/
@@ -66,4 +67,5 @@ void	free_argv(char **argv);
 
 /* parsing_tester.c ----------------------------------------------------------*/
 void	print_ast_tree(t_ast *node, int depth);
+
 #endif

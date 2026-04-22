@@ -15,14 +15,19 @@
 
 # include "minishell.h"
 
-/*Estrutura da lista de ambientes recebidos por envp*/
+/* ************************************************************************** */
+/* 	        STRUCTS - T_ENV AND T_SHELL		        */
+/* ************************************************************************** */
+
+/*------------------------------------------ Struct of environment (envp)*/
 typedef struct s_env
 {
 	char			*key;
 	char			*value;
 	struct s_env	*next;
 }	t_env;
-/* Essa estrutura é responsável por armazenar o status do ultimo comando */
+
+/* Struct of Shell, contains list of environment end last exit status*/
 typedef struct s_shell
 {
 	t_env	*lst_env;
@@ -30,15 +35,19 @@ typedef struct s_shell
 	int		exit_flag;
 }	t_shell;
 
-/*environment_utils.c ------------------------------------------------------*/
+/* ************************************************************************** */
+/*          Function declarations and their respective .c files.              */
+/* ************************************************************************** */
+
+// ------------------------------------------------ environment_utils.c 
+int		env_size(t_env *lst_env);
 char	*str_join_three(char *key, char c, char *value);
 void	free_env_array(char **env);
-int		env_size(t_env *lst_env);
 char	**env_to_array(t_env *env);
 char	*get_environment(t_env *env, char *key);
 void	free_env_list(t_env *env_lst);
 
-/*environment.c ------------------------------------------------------*/
+// ------------------------------------------------------ *environment.c
 void	add_environment(t_env **lst, t_env *node);
 t_env	*create_environment(char *str);
 t_env	*add_env(char **envp);
