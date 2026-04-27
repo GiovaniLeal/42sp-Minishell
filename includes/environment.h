@@ -16,10 +16,10 @@
 # include "minishell.h"
 
 /* ************************************************************************** */
-/* 	        STRUCTS - T_ENV AND T_SHELL		        */
+/* 	                      STRUCTS 		        */
+/*       T_ENV - Struct of environment (envp)                                 */
+/*       T_SHELL - Contains list of environment end last exit status          */
 /* ************************************************************************** */
-
-/*------------------------------------------ Struct of environment (envp)*/
 typedef struct s_env
 {
 	char			*key;
@@ -27,7 +27,6 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-/* Struct of Shell, contains list of environment end last exit status*/
 typedef struct s_shell
 {
 	t_env	*lst_env;
