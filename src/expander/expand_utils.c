@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/09 12:45:41 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/22 15:06:35 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/04/27 16:47:14 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,28 +46,22 @@ char	*handle_dollar(char *res, char *str, int *index, t_shell *shell)
 	char	*new;
 
 	(*index)++;
-
 	if (str[*index] == '?')
 	{
 		(*index)++;
 		return (last_return(shell, res));
 	}
-
 	// trata casos tipo $- ou $"
 	if (!ft_isalnum(str[*index]) && str[*index] != '_')
 	{
 		res = append_char(res, '$');
 		return (res);
 	}
-
 	key = get_key(str, index);
-
 	value = get_environment(shell->lst_env, key);
 	free(key);
-
 	if (!value)
 		return (res);
-
 	new = ft_strjoin(res, value);
 	free(res);
 	return (new);

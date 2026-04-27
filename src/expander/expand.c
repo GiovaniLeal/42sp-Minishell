@@ -73,6 +73,7 @@ a string do array*/
 void	expand_command(char **array, t_shell *shell)
 {
 	int		i;
+	int		j;
 	char	*new_string;
 
 	i = 0;
@@ -83,6 +84,17 @@ void	expand_command(char **array, t_shell *shell)
 		array[i] = new_string;
 		i++;
 	}
+	i = 0;
+	j = 0;
+	while (array[i])
+	{
+		if (array[i][0] != '\0')
+			array[j++] = array[i];
+		else
+			free(array[i]);
+		i++;
+	}
+	array[j] = NULL;
 }
 
 //Percorre a arvore e chama funcao de expansão 

@@ -6,7 +6,7 @@
 /*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/15 16:00:15 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/27 15:47:19 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ static int	exit_status(int status)
 		return ((status >> 8) & 0xFF);
 	return (128 + (status & 0x7F));
 }
-
 
 int	exec_forked(t_ast *node, t_shell *shell)
 {
@@ -50,6 +49,9 @@ int	exec_ast_tree(t_ast *node, t_shell *shell)
 	int	result;
 
 	if (!node)
+		return (0);
+	if (node->type == NODE_CMD
+		&& (!node->argv || !node->argv[0]))
 		return (0);
 	if (node->type == NODE_PIPE)
 	{
