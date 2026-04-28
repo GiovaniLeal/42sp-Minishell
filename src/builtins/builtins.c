@@ -3,15 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 16:35:07 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/17 15:41:30 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/28 08:46:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* ************************************************************************** */
+/*  	    Dispatcher for shell built-in commands: 	        */
+/*   1. Identifies if the given command matches an internal shell function.   */
+/*   2. Executes the corresponding function (e.g., cd, echo, exit) and        */
+/*    returns its exit status.                                                */
+/*   3. Returns -1 if the command is not a built-in, signaling that it        */
+/*    should be handled as an external executable.                            */
+/* ************************************************************************** */
 int	exec_builtins(t_ast *node, t_shell *shell)
 {
 	if (ft_strcmp(node->argv[0], "exit") == 0)
@@ -31,6 +39,15 @@ int	exec_builtins(t_ast *node, t_shell *shell)
 	return (-1);
 }
 
+/* ************************************************************************** */
+/*           Identifies if a command is a shell built-in:                     */
+/*     1. Checks for edge cases (NULL nodes or empty arguments).              */
+/*     2. Matches the command name against the list of supported built-ins    */
+/*     (exit, echo, pwd, cd, env, export, unset).                             */
+/*     3. Returns 1 if the command is a built-in, 0 otherwise.                */
+/*     This helper allows the executor to decide between in-process execution */
+/*     or forking an external executable.                                     */
+/* ************************************************************************** */
 int	its_builtin(t_ast *node)
 {
 	if (!node || !node->argv || !node->argv[0])
