@@ -3,53 +3,75 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 15:55:37 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/21 18:29:48 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/28 17:33:43 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	export_update(t_env *node, char *str)
+/* ************************************************************************** */
+/*          		Function Prototypes 		        */
+/* ************************************************************************** */
+int			exec_export(char **argv, t_shell *shell);
+int			is_valid_arg(char *str);
+t_env		*find_in_lst(char *str, t_env *env);
+void		export_update(t_env *node, char *str);
+static void	apply_value(t_env *node, char *new_val, int append);
+
+/* ************************************************************************** */
+/* 	          Executes the export built-in                          */
+/* 1. no arguments: displays the environment variables listed for export      */
+/* 2. argument validation: verifies if identifier follows naming rules        */
+/* 3. logic: updates existing nodes or creates new entries in the list        */
+/* ************************************************************************** */
+int	exec_export(char **argv, t_shell *shell)
 {
 	int		i;
-	int		append;
-	char	*new_value;
-	char	*tmp;
+	t_env	*node;
 
+	if (!argv[1])
+		return (display_export(shell->lst_env));
 	i = 0;
-	append = 0;
+	while (argv[++i])
+	{
+		if (!is_valid_arg(argv[i]))
+		{
+			ft_putstr_fd("export: not a valid identifier\n", 2);
+			return (1);
+		}
+		node = find_in_lst(argv[i], shell->lst_env);
+		if (node)
+			export_update(node, argv[i]);
+		else
+		{
+			node = create_environment(argv[i]);
+			if (!node)
+				return (1);
+			add_environment(&shell->lst_env, node);
+		}
+	}
+	return (0);
+}
 
+int	is_valid_arg(char *str)
+{
+	int	i;
+
+	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
+		return (0);
+	i = 1;
 	while (str[i] && str[i] != '=')
 	{
 		if (str[i] == '+' && str[i + 1] == '=')
-		{
-			append = 1;
 			break ;
-		}
+		if (!ft_isalnum(str[i]) && str[i] != '_')
+			return (0);
 		i++;
 	}
-	if (!str[i])
-		return ;
-	i += append ? 2 : 1;
-	new_value = ft_strdup(str + i);
-	if (!new_value)
-		return ;
-
-	if (append && node->value)
-	{
-		tmp = ft_strjoin(node->value, new_value);
-		free(node->value);
-		free(new_value);
-		node->value = tmp;
-	}
-	else
-	{
-		free(node->value);
-		node->value = new_value;
-	}
+	return (1);
 }
 
 t_env	*find_in_lst(char *str, t_env *env)
@@ -71,54 +93,50 @@ t_env	*find_in_lst(char *str, t_env *env)
 	return (NULL);
 }
 
-int	is_valid_arg(char *str)
+void	export_update(t_env *node, char *str)
 {
-	int	i;
+	int		i;
+	int		append;
+	char	*new_value;
 
-	if (!str || (!ft_isalpha(str[0]) && str[0] != '_'))
-		return (0);
-
-	i = 1;
+	i = 0;
+	append = 0;
 	while (str[i] && str[i] != '=')
 	{
 		if (str[i] == '+' && str[i + 1] == '=')
+		{
+			append = 1;
 			break ;
-		if (!ft_isalnum(str[i]) && str[i] != '_')
-			return (0);
+		}
 		i++;
 	}
-	return (1);
+	if (!str[i])
+		return ;
+	if (append)
+		i += 2;
+	else
+		i += 1;
+	new_value = ft_strdup(str + i);
+	if (!new_value)
+		return ;
+	apply_value(node, new_value, append);
 }
 
-int	exec_export(char **argv, t_shell *shell)
+static void	apply_value(t_env *node, char *new_val, int append)
 {
-	int		i;
-	t_env	*node;
+	char	*tmp;
 
-	if (!argv[1])
-		return (display_export(shell->lst_env));
-
-	i = 1;
-	while (argv[i])
+	if (append && node->value)
 	{
-		if (!is_valid_arg(argv[i]))
-		{
-			ft_putstr_fd("export: not a valid identifier\n", 2);
-			i++;
-			return (1);
-		}
-		node = find_in_lst(argv[i], shell->lst_env);
-		if (node)
-			export_update(node, argv[i]);
-		else
-		{
-			node = create_environment(argv[i]);
-			if (!node)
-				return (1);
-			add_environment(&shell->lst_env, node);
-		}
-		i++;
+		tmp = ft_strjoin(node->value, new_val);
+		free(node->value);
+		node->value = tmp;
+		free(new_val);
 	}
-	return (0);
+	else
+	{
+		if (node->value)
+			free(node->value);
+		node->value = new_val;
+	}
 }
-

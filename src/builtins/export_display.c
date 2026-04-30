@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export_display.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/06 16:36:07 by giodos-s          #+#    #+#             */
-/*   Updated: 2026/04/21 18:27:10 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/28 17:36:03 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	print_env(char	**env_arr)
 		ft_printf("declare -x ");
 		ft_printf("%s\n", env_arr[i++]);
 	}
-}	
+}
 
 void	sort_arr(char **export_arr)
 {
