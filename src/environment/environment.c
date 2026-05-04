@@ -12,7 +12,22 @@
 
 #include "minishell.h"
 
-/*adiciona na ordem de leitura o novo nó na lista de enviroment*/
+/* Helper function that frees all memory associated with an env node */
+void	free_env_list(t_env *env_lst)
+{
+	t_env	*temp;
+
+	while (env_lst)
+	{
+		temp = env_lst->next;
+		free(env_lst->key);
+		free(env_lst->value);
+		free(env_lst);
+		env_lst = temp;
+	}
+}
+
+/* Adds a new node to the environment list in input order */
 void	add_environment(t_env **lst, t_env *node)
 {
 	t_env	*temp;
@@ -30,7 +45,7 @@ void	add_environment(t_env **lst, t_env *node)
 	temp->next = node;
 }
 
-/* Cria um novo ambiente(nó) e faz o parsing da str recebida */
+/* Creates a new environment node and parses the given string */
 t_env	*create_environment(char *str)
 {
 	int		index;
@@ -54,16 +69,14 @@ t_env	*create_environment(char *str)
 	if (!new_node->value)
 	{
 		free(new_node->key);
-		free(new_node);
-		return (NULL);
+		return (free(new_node), NULL);
 	}
 	new_node->next = NULL;
 	return (new_node);
 }
 
-
-/* Percorre o array de envp e chama as funçoes responsáveis pela criação da 
-lista de enviromets*/
+/* Iterates through the envp array and calls the functions responsible
+   for creating the environment list */
 t_env	*add_env(char **envp)
 {
 	int		i;

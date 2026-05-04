@@ -83,3 +83,40 @@ int	add_new_arg(t_ast *cmd_node, char *value)
 	cmd_node->argv = new_arg;
 	return (1);
 }
+
+/* Processes the current token and updates the command node.
+
+   - If the token is a WORD:
+     → adds it as an argument (argv)
+
+   - If the token is a redirection:
+     → validates syntax (must be followed by a WORD)
+     → adds a redirection node to the command
+
+   Advances the token pointer accordingly.
+
+   Returns:
+   - 1 on success
+   - 0 on syntax error or allocation failure
+*/
+int	handle_token(t_ast *command, t_token **current_token)
+{
+	if ((*current_token)->type == T_WORD)
+	{
+		if (!add_arg(command, (*current_token)->value))
+			return (0);
+		*current_token = (*current_token)->next;
+	}
+	else
+	{
+		if (!(*current_token)->next
+			|| (*current_token)->next->type != T_WORD)
+			return (0);
+		if (!add_redir(command,
+				(*current_token)->type,
+				(*current_token)->next->value))
+			return (0);
+		*current_token = (*current_token)->next->next;
+	}
+	return (1);
+}

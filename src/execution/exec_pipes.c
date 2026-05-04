@@ -12,9 +12,15 @@
 
 #include "minishell.h"
 
-/* Após a criação do filho esquerdo, ele não vai ler no pipe apenas escrever
- dup2(oldfd, newfd) faz o STDOUT_FILENO apontar para pipefd[1]
- Quando o comando escrever no stdout, na verdade estara escrevendo dentro do pipe*/
+/* Executes the left side of a pipe in a child process.
+
+   - Closes the read end of the pipe (unused)
+   - Redirects STDOUT to the pipe's write end using dup2
+   - Executes the left AST subtree
+   - Frees allocated resources before exiting
+
+   After dup2, any output written to stdout will go into the pipe
+*/
 static void	exec_pipe_left(int *pipefd, t_ast *node, t_shell *shell)
 {
 	close(pipefd[0]);
@@ -26,6 +32,15 @@ static void	exec_pipe_left(int *pipefd, t_ast *node, t_shell *shell)
 	exit(shell->last_exit);
 }
 
+/* Executes the right side of a pipe in a child process.
+
+   - Closes the write end of the pipe (unused)
+   - Redirects STDIN to the pipe's read end using dup2
+   - Executes the right AST subtree
+   - Frees allocated resources before exiting
+
+   After dup2, stdin will read data coming from the pipe
+*/
 static void	exec_pipe_right(int *pipefd, t_ast *node, t_shell *shell)
 {
 	close(pipefd[1]);
@@ -37,7 +52,8 @@ static void	exec_pipe_right(int *pipefd, t_ast *node, t_shell *shell)
 	exit(shell->last_exit);
 }
 
-/* Fecha o pipefd corretamente em caso de erro
+/* Closes both ends of the pipe and returns an error code.
+   Used to properly clean up file descriptors when fork fails
 */
 static int	close_pipes(int *pipefd)
 {
@@ -46,9 +62,20 @@ static int	close_pipes(int *pipefd)
 	return (-1);
 }
 
-/* O pipe cria um canal de comunicação entre processos
-pipe(pipefd) cria dois file descriptors:
- pipefd[2] -> fd[0] = leitura, fd[1] = escrita
+/* Executes a pipeline between two commands.
+
+   - pipe() creates a unidirectional communication channel:
+     pipefd[0] → read end
+     pipefd[1] → write end
+
+   - Forks two child processes:
+     • Left child → writes to the pipe
+     • Right child → reads from the pipe
+
+   - Parent process:
+     • Closes both pipe ends
+     • Waits for both children to finish
+     • Returns the exit status of the right command (shell behavior)
 */
 int	exec_pipe(t_ast *node, t_shell *shell)
 {

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/*UNE TRES STRINGS */
+/* Joins three strings */
 char	*str_join_three(char *key, char c, char *value)
 {
 	int		i;
@@ -38,7 +38,6 @@ char	*str_join_three(char *key, char c, char *value)
 	return (str);
 }
 
-
 void	free_env_array(char **env)
 {
 	int	i;
@@ -54,7 +53,7 @@ void	free_env_array(char **env)
 	free(env);
 }
 
-/*conta o tamanho de nós da lista*/
+/* Counts the number of nodes in the list */
 int	env_size(t_env *lst_env)
 {
 	int	count;
@@ -68,8 +67,7 @@ int	env_size(t_env *lst_env)
 	return (count);
 }
 
-/* Cria array a partir da lista de ambientes. Essa função é usada precisa ser
-usada no executor !!*/
+/* Creates an array from the environment list.*/
 char	**env_to_array(t_env *env)
 {
 	int		i;
@@ -96,7 +94,7 @@ char	**env_to_array(t_env *env)
 	return (array);
 }
 
-/*Função para buscar variável na lista de ambientes de envp | USADA NA EXPANSÃO*/
+/* Searches for a variable in the environment list */
 char	*get_environment(t_env *env, char *key)
 {
 	while (env)
@@ -106,19 +104,4 @@ char	*get_environment(t_env *env, char *key)
 		env = env->next;
 	}
 	return (NULL);
-}
-
-/*funcao auxiliar que limpa toda a memoria de um nó de env*/
-void	free_env_list(t_env *env_lst)
-{
-	t_env	*temp;
-
-	while (env_lst)
-	{
-		temp = env_lst->next;
-		free(env_lst->key);
-		free(env_lst->value);
-		free(env_lst);
-		env_lst = temp;
-	}
 }

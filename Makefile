@@ -41,11 +41,9 @@ SRC :=  main.c \
 	$(SRC)/$(LEXER_DIR)/lexer.c \
 	$(SRC)/$(LEXER_DIR)/lexer_list.c \
 	$(SRC)/$(LEXER_DIR)/lexer_utils.c \
-	$(SRC)/$(LEXER_DIR)/lexer_tester.c \
 	$(SRC)/$(PARSING_DIR)/parsing.c \
 	$(SRC)/$(PARSING_DIR)/parsing_utils.c \
 	$(SRC)/$(PARSING_DIR)/parsing_free.c \
-	$(SRC)/$(PARSING_DIR)/parsing_tester.c \
 	$(SRC)/$(EXECUTION_DIR)/exec_ast.c \
 	$(SRC)/$(EXECUTION_DIR)/exec_pipes.c \
 	$(SRC)/$(EXECUTION_DIR)/exec.c \

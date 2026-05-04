@@ -44,11 +44,11 @@ char	*str_join_three(char *key, char c, char *value);
 void	free_env_array(char **env);
 char	**env_to_array(t_env *env);
 char	*get_environment(t_env *env, char *key);
-void	free_env_list(t_env *env_lst);
 
 // ------------------------------------------------------ *environment.c
 void	add_environment(t_env **lst, t_env *node);
 t_env	*create_environment(char *str);
 t_env	*add_env(char **envp);
+void	free_env_list(t_env *env_lst);
 
 #endif

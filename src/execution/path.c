@@ -3,16 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:23:11 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/27 15:35:51 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/05/04 10:47:53 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Se o comando ja tem uma barra (/) ele é um caminho absoluto ou relativo */
+/* Checks if the command contains a '/' (absolute or relative path).
+   If so, validates its existence and execution permissions.
+
+   - If the file does not exist → exit(127)
+   - If it exists but is not executable → exit(126)
+   - Otherwise, returns a duplicated valid path
+
+   Returns NULL if the command does not contain '/'
+*/
 static char	*check_absolute_path(char *cmd)
 {
 	if (ft_strchr(cmd, '/'))
@@ -32,7 +40,18 @@ static char	*check_absolute_path(char *cmd)
 	return (NULL);
 }
 
-/* vai procurar o comando dentro dos diretórios e testar sua execução */
+/* Searches for the command in the given list of directories (PATH).
+
+   - Iterates through each directory
+   - Builds a full path candidate (dir + '/' + cmd)
+   - Checks if the file is executable (X_OK)
+
+   Returns:
+   - A valid executable path if found
+   - NULL if the command is not found in any directory
+
+   Frees the dirs array before returning
+*/
 static char	*search_in_dir(char	**dirs, char *cmd)
 {
 	char	*temp;
@@ -57,9 +76,17 @@ static char	*search_in_dir(char	**dirs, char *cmd)
 	return (NULL);
 }
 
-/* Quando o execve precisar buscar o executável path vai achar o caminho
-e o diretório em que o comando especifico se encontra */
-/* vai localizar o comando antes de executa-lo*/
+/* Resolves the full path of a command before execution.
+
+   - First checks if the command is an absolute or relative path
+   - Otherwise, retrieves the PATH environment variable
+   - Splits PATH into directories
+   - Searches for the executable in those directories
+
+   Returns:
+   - A valid executable path if found
+   - NULL if the command cannot be resolved
+*/
 char	*find_in_path(char	*cmd)
 {
 	char	*path;
@@ -77,4 +104,67 @@ char	*find_in_path(char	*cmd)
 		return (NULL);
 	result = search_in_dir(dirs, cmd);
 	return (result);
+}
+
+/* Handles execution of commands that include a '/' in their path
+   (absolute or relative paths).
+
+   - Checks if the path points to a directory
+   - Verifies file existence (F_OK)
+   - Verifies execution permission (X_OK)
+   - Executes the command directly if all checks pass
+
+   Exits with appropriate error codes on failure.
+*/
+void	handle_path_command(t_ast *node, t_shell *shell)
+{
+	struct stat	st;
+
+	if (stat(node->argv[0], &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd("minishell: Is a directory\n", 2);
+		exit(126);
+	}
+	if (access(node->argv[0], F_OK) != 0)
+	{
+		ft_putstr_fd("minishell: No such file or directory\n", 2);
+		exit(127);
+	}
+	if (access(node->argv[0], X_OK) != 0)
+	{
+		ft_putstr_fd("minishell: Permission denied\n", 2);
+		exit(126);
+	}
+	execute_child(node->argv[0], node->argv, shell->lst_env);
+	exit(126);
+}
+
+/* Handles the case where a command cannot be resolved via PATH.
+
+   - Checks if the command exists in the current directory
+   - If it exists but is not executable → returns permission error (126)
+   - If it is a directory → treated as command not found (127)
+   - Otherwise → command not found (127)
+
+   This function always exits with the correct status code.
+*/
+void	handle_path_not_found(char *cmd)
+{
+	struct stat	st;
+
+	if (access(cmd, F_OK) == 0)
+	{
+		if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
+		{
+			ft_putstr_fd("minishell: command not found\n", 2);
+			exit(127);
+		}
+		if (access(cmd, X_OK) != 0)
+		{
+			ft_putstr_fd("minishell: Permission denied\n", 2);
+			exit(126);
+		}
+	}
+	ft_putstr_fd("minishell: command not found\n", 2);
+	exit(127);
 }

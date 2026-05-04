@@ -59,6 +59,7 @@ int		is_redir(t_token_type type);
 int		add_new_arg(t_ast *cmd_node, char *value);
 t_ast	*new_pipe_node(t_ast *left, t_ast *right);
 t_ast	*new_cmd_node(void);
+int		handle_token(t_ast *command, t_token **current_token);
 
 /* parsing_free.c ------------------------------------------------------------*/
 void	free_ast(t_ast *node);

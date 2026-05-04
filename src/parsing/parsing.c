@@ -12,7 +12,14 @@
 
 #include "minishell.h"
 
-/* Adiciona um redirecionamento (>, <, >>, <<) à lista do comandos */
+/* Adds a redirection (>, <, >>, <<) to the command's redirection list.
+
+   - Allocates a new redirection node
+   - Duplicates the file name
+   - Appends the node to the end of the redirection list
+
+   Returns 1 on success, 0 on allocation failure
+*/
 int	add_redir(t_ast *cmd, t_token_type type, char *file)
 {
 	t_redir	*new;
@@ -41,9 +48,12 @@ int	add_redir(t_ast *cmd, t_token_type type, char *file)
 	return (1);
 }
 
-/*
-** Inicializa argv se for o primeiro argumento
-** ou adiciona um novo argumento se argv já existir.
+/* Adds an argument to the command node.
+
+   - If argv is NULL → initializes it with the first argument
+   - Otherwise → delegates to add_new_arg to append a new argument
+
+   Returns 1 on success, 0 on allocation failure
 */
 int	add_arg(t_ast *cmd_node, char *token_value)
 {
@@ -65,8 +75,16 @@ int	add_arg(t_ast *cmd_node, char *token_value)
 	return (add_new_arg(cmd_node, token_value));
 }
 
-/* Cria um nó de comando a partir dos tokens WORD e REDIR consecutivos */
-/* Retorna NULL em caso de erro de sintaxe ou comando inválido */
+/* Parses a simple command from consecutive tokens (WORD and REDIR).
+
+   - Builds a command node (argv + redirections)
+   - Handles argument insertion and redirection parsing
+   - Validates syntax (e.g., redirection must be followed by a WORD)
+
+   Returns:
+   - A valid command node on success
+   - NULL on syntax error or allocation failure
+*/
 t_ast	*parse_command(t_token **current_token)
 {
 	t_ast	*command;
@@ -77,31 +95,24 @@ t_ast	*parse_command(t_token **current_token)
 	while (*current_token && ((*current_token)->type == T_WORD
 			|| is_redir((*current_token)->type)))
 	{
-		if (*current_token && (*current_token)->type == T_WORD)
-		{
-			if (!add_arg(command, (*current_token)->value))
-				return (free_ast(command), NULL);
-			*current_token = (*current_token)->next;
-		}
-		else
-		{
-			if (!(*current_token)->next
-				|| (*current_token)->next->type != T_WORD)
-				return (free_ast(command), NULL);
-			if (!add_redir(command,
-					(*current_token)->type,
-					(*current_token)->next->value))
-				return (free_ast(command), NULL);
-			*current_token = (*current_token)->next->next;
-		}
+		if (!handle_token(command, current_token))
+			return (free_ast(command), NULL);
 	}
 	if (!command->argv)
 		return (free_ast(command), NULL);
 	return (command);
 }
 
-/* Constrói a árvore de pipes encadeando comandos com o operador '|' */
-/* Retorna a raiz da AST do pipeline ou NULL em caso de erro */
+/* Builds a pipeline AST by chaining commands with the '|' operator.
+
+   - Parses the left command
+   - For each pipe token, parses the right command
+   - Creates a pipe node linking left and right subtrees
+
+   Returns:
+   - The root of the pipeline AST
+   - NULL on syntax error or allocation failure
+*/
 t_ast	*parse_pipeline(t_token **current_token)
 {
 	t_ast	*left_cmd;
@@ -127,8 +138,15 @@ t_ast	*parse_pipeline(t_token **current_token)
 	return (left_cmd);
 }
 
-/* Função principal do parser: converte a lista de tokens em uma AST */
-/* Retorna NULL se houver erro de sintaxe ou tokens restantes */
+/* Main parser entry point: converts a token list into an AST.
+
+   - Starts parsing from the pipeline level
+   - Ensures all tokens are consumed (no leftover tokens)
+
+   Returns:
+   - A valid AST on success
+   - NULL if a syntax error occurs or parsing is incomplete
+*/
 t_ast	*parser(t_token *token_list)
 {
 	t_ast	*parse_tree;
