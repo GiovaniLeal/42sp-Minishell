@@ -70,6 +70,7 @@ int	add_arg(t_ast *cmd_node, char *token_value)
 			return (0);
 		}
 		cmd_node->argv[1] = NULL;
+		// free(cmd_node->argv);
 		return (1);
 	}
 	return (add_new_arg(cmd_node, token_value));

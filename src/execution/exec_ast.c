@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/04 10:49:57 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/04 19:51:00 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,12 @@ int	exec_forked(t_ast *node, t_shell *shell)
 	pid_t	pid;
 	int		status;
 
+	if (is_directory(node->argv[0]) && !node->argv[1])
+	{
+		ft_putstr_fd(" Is a directory\n", 2);
+		shell->last_exit = 126;
+		return (shell->last_exit);
+	}
 	pid = fork();
 	if (pid < 0)
 		return (-1);
@@ -58,7 +64,7 @@ int	exec_forked(t_ast *node, t_shell *shell)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		exec_simple(node, shell);
-		exit(127);
+		return (shell->last_exit);
 	}
 	waitpid(pid, &status, 0);
 	setup_signals();
@@ -107,4 +113,13 @@ int	exec_ast_tree(t_ast *node, t_shell *shell)
 	result = exec_forked(node, shell);
 	shell->last_exit = result;
 	return (result);
+}
+
+int is_directory(const char *path)
+{
+    struct stat st;
+
+    if (stat(path, &st) == -1)
+        return 0;
+    return S_ISDIR(st.st_mode);
 }

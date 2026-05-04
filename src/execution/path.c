@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:23:11 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/04 10:47:53 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/04 20:42:51 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,21 @@
 
    Returns NULL if the command does not contain '/'
 */
-static char	*check_absolute_path(char *cmd)
+char	*check_absolute_path(char *cmd, t_shell *shell)
 {
 	if (ft_strchr(cmd, '/'))
 	{
 		if (access(cmd, F_OK) != 0)
 		{
 			ft_putstr_fd("minishell: No such file or directory\n", 2);
-			exit(127);
+			shell->last_exit = 127;
+			return (NULL);
 		}
 		if (access(cmd, X_OK) != 0)
 		{
 			ft_putstr_fd("minishell: Permission denied\n", 2);
-			exit(126);
+			shell->last_exit = 126;
+			return (NULL);
 		}
 		return (ft_strdup(cmd));
 	}
@@ -52,7 +54,7 @@ static char	*check_absolute_path(char *cmd)
 
    Frees the dirs array before returning
 */
-static char	*search_in_dir(char	**dirs, char *cmd)
+char	*search_in_dir(char	**dirs, char *cmd)
 {
 	char	*temp;
 	char	*path_candidate;
@@ -87,13 +89,13 @@ static char	*search_in_dir(char	**dirs, char *cmd)
    - A valid executable path if found
    - NULL if the command cannot be resolved
 */
-char	*find_in_path(char	*cmd)
+char	*find_in_path(char *cmd, t_shell * shell)
 {
 	char	*path;
 	char	**dirs;
 	char	*result;
 
-	result = check_absolute_path(cmd);
+	result = check_absolute_path(cmd, shell);
 	if (result)
 		return (result);
 	path = getenv("PATH");
@@ -116,27 +118,36 @@ char	*find_in_path(char	*cmd)
 
    Exits with appropriate error codes on failure.
 */
-void	handle_path_command(t_ast *node, t_shell *shell)
+int	handle_path_command(t_ast *node, t_shell *shell)
 {
 	struct stat	st;
 
 	if (stat(node->argv[0], &st) == 0 && S_ISDIR(st.st_mode))
 	{
 		ft_putstr_fd("minishell: Is a directory\n", 2);
-		exit(126);
+		shell->last_exit = 126;
 	}
-	if (access(node->argv[0], F_OK) != 0)
+	else if (access(node->argv[0], F_OK) != 0)
 	{
 		ft_putstr_fd("minishell: No such file or directory\n", 2);
-		exit(127);
+		shell->last_exit = 127;
 	}
-	if (access(node->argv[0], X_OK) != 0)
+	else if (access(node->argv[0], X_OK) != 0)
 	{
 		ft_putstr_fd("minishell: Permission denied\n", 2);
-		exit(126);
+		shell->last_exit = 126;
 	}
 	execute_child(node->argv[0], node->argv, shell->lst_env);
-	exit(126);
+	return(shell->last_exit);
+}
+
+
+void	exit_status(t_ast *node, t_shell *shell, char *str_error, int exit_number)
+{
+	write(2, str_error, ft_strlen(str_error));
+	shell->last_exit = exit_number;
+	free_ast(node);
+	free_env_list(shell->lst_env);
 }
 
 /* Handles the case where a command cannot be resolved via PATH.
@@ -152,19 +163,30 @@ void	handle_path_not_found(char *cmd)
 {
 	struct stat	st;
 
-	if (access(cmd, F_OK) == 0)
+	// 1. Existe?
+	if (access(cmd, F_OK) != 0)
 	{
-		if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
-		{
-			ft_putstr_fd("minishell: command not found\n", 2);
-			exit(127);
-		}
-		if (access(cmd, X_OK) != 0)
-		{
-			ft_putstr_fd("minishell: Permission denied\n", 2);
-			exit(126);
-		}
+		ft_putstr_fd(" command not found\n", 2);
+		//perror("minishell"); // imprime mensagem real (No such file, etc)
+		exit(127);
 	}
-	ft_putstr_fd("minishell: command not found\n", 2);
-	exit(127);
+
+	// 2. É diretório?
+	if (stat(cmd, &st) == 0 && S_ISDIR(st.st_mode))
+	{
+		write(2, "minishell: Is a directory\n", 26);
+		exit(126);
+	}
+	else if (stat(cmd, &st) == 0 && !S_ISDIR(st.st_mode))
+	{
+		ft_putstr_fd(" command not found\n", 2);
+		exit (127);
+	}
+
+	// 3. Tem permissão de execução?
+	if (access(cmd, X_OK) != 0)
+	{
+		perror("minishell"); // geralmente "Permission denied"
+		exit(126);
+	}
 }

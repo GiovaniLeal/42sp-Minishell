@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 14:57:33 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/04 11:20:15 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/04 20:53:19 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	execute_child(char *path, char **argv, t_env *env)
 	envp = env_to_array(env);
 	execve(path, argv, envp);
 	saved_errno = errno;
-	perror("minishell");
 	free(path);
 	free_env_array(envp);
 	if (saved_errno == EACCES || saved_errno == EISDIR)
@@ -56,8 +55,15 @@ void	exec_simple(t_ast *node, t_shell *shell)
 	if (!node->argv || !node->argv[0] || node->argv[0][0] == '\0')
 		exit(0);
 	if (ft_strchr(node->argv[0], '/'))
-		handle_path_command(node, shell);
-	path_to_exec = find_in_path(node->argv[0]);
+	{
+		if (handle_path_command(node, shell))
+		{
+			free(node);
+			free(shell->lst_env);
+			exit(shell->last_exit);
+		}
+	}
+	path_to_exec = find_in_path(node->argv[0], shell);
 	if (!path_to_exec)
 		handle_path_not_found(node->argv[0]);
 	if (node->redirs && apply_redirections(node->redirs) < 0)
