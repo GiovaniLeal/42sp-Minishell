@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 14:57:33 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/27 16:52:36 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/04/30 10:42:08 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,63 @@ pid > 0 (positivo) processo PAI
 */
 void	exec_simple(t_ast *node, t_shell *shell)
 {
-	char	*path_to_exec;
+	char		*path_to_exec;
+	struct stat	st;
 
-	path_to_exec = find_in_path(node->argv[0]);
 	if (!node->argv || !node->argv[0] || node->argv[0][0] == '\0')
 		exit(0);
-	if (!path_to_exec)
+
+	// CASO 1: comando com '/'
+	if (ft_strchr(node->argv[0], '/'))
 	{
+		if (stat(node->argv[0], &st) == 0 && S_ISDIR(st.st_mode))
+		{
+			ft_putstr_fd("minishell: Is a directory\n", 2);
+			exit(126);
+		}
+		if (access(node->argv[0], F_OK) != 0)
+		{
+			ft_putstr_fd("minishell: No such file or directory\n", 2);
+			exit(127);
+		}
+		if (access(node->argv[0], X_OK) != 0)
+		{
+			ft_putstr_fd("minishell: Permission denied\n", 2);
+			exit(126);
+		}
+		execute_child(node->argv[0], node->argv, shell->lst_env);
+		exit(126);
+	}
+
+	// CASO 2: comando SEM '/'
+	path_to_exec = find_in_path(node->argv[0]);
+	if (!path_to_exec)
+	if (!path_to_exec)
+		{
+		if (access(node->argv[0], F_OK) == 0)
+		{
+			struct stat st;
+
+			if (stat(node->argv[0], &st) == 0 && S_ISDIR(st.st_mode))
+			{
+				ft_putstr_fd("minishell: command not found\n", 2);
+				exit(127);
+			}
+			if (access(node->argv[0], X_OK) != 0)
+			{
+				ft_putstr_fd("minishell: Permission denied\n", 2);
+				exit(126);
+			}
+		}
 		ft_putstr_fd("minishell: command not found\n", 2);
 		exit(127);
 	}
 	if (node->redirs)
 	{
 		if (apply_redirections(node->redirs) < 0)
-		{
 			exit(1);
-		}
 	}
+
 	execute_child(path_to_exec, node->argv, shell->lst_env);
 	free(path_to_exec);
 	exit(126);
