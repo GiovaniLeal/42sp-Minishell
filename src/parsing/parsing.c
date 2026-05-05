@@ -57,15 +57,7 @@ int	add_redir(t_ast *cmd, t_token_type type, char *file)
 */
 int	add_arg(t_ast *cmd_node, char *token_value)
 {
-	int	i;
 
-	i = 0;
-	if (cmd_node->argv)
-	{
-		while (cmd_node->argv[i])
-			free(cmd_node->argv[i++]);
-		free(cmd_node->argv);
-	}
 	if (!cmd_node->argv)
 	{
 		cmd_node->argv = malloc(sizeof(char *) * 2);
