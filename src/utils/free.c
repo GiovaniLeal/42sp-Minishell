@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 15:39:02 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/02/19 15:44:32 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/05/05 13:52:40 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,3 +26,12 @@ void	free_split(char **array)
 	}
 	free(array);
 }
+
+void	clear_all(t_ast *node, t_shell *shell)
+{
+	free_ast(node);
+	free_env_list(shell->lst_env);
+	free(shell);
+
+}
+

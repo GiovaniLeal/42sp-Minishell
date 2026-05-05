@@ -13,35 +13,36 @@
 #ifndef PARSING_H
 # define PARSING_H
 
-/* ************************************************************************** */
-/*         		      STRUCTS   	                      */
-/* T_AST = If the node is CMD use the argv and redirs                         */
-/* T_REDIR = For redirections comand control                                  */
-/* T_PARSING_TYPE = For control the type of node (PIPE OR CMD)                */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*         		      STRUCTS   	                      */
+// /* T_AST = If the node is CMD use the argv and redirs                         */
+// /* T_REDIR = For redirections comand control                                  */
+// /* T_PARSING_TYPE = For control the type of node (PIPE OR CMD)                */
+// /* ************************************************************************** */
 
-typedef enum e_parsing_type
-{
-	NODE_CMD,
-	NODE_PIPE
-}	t_parsing_type;
+// typedef enum e_parsing_type
+// {
+// 	NODE_CMD,
+// 	NODE_PIPE
+// }	t_parsing_type;
 
-typedef struct s_redir
-{
-	t_token_type	type;
-	char			*file;
-	int				heredoc_fd;
-	struct s_redir	*next;
-}	t_redir;
+// typedef struct s_redir
+// {
+// 	t_token_type	type;
+// 	char			*file;
+// 	int				heredoc_fd;
+// 	struct s_redir	*next;
+// }	t_redir;
 
-typedef struct s_ast
-{
-	t_parsing_type	type;
-	struct s_ast	*left;
-	struct s_ast	*right;
-	char			**argv;
-	t_redir			*redirs;
-}	t_ast;
+// typedef struct s_ast
+// {
+// 	t_parsing_type	type;
+// 	struct s_ast	*left;
+// 	struct s_ast	*right;
+// 	char			**argv;
+// 	t_redir			*redirs;
+// }	t_ast;
+
 
 /* ************************************************************************** */
 /*          Function declarations and their respective .c files.              */

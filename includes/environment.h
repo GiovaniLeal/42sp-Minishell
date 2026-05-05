@@ -15,24 +15,27 @@
 
 # include "minishell.h"
 
-/* ************************************************************************** */
-/* 	                      STRUCTS 		        */
-/*       T_ENV - Struct of environment (envp)                                 */
-/*       T_SHELL - Contains list of environment end last exit status          */
-/* ************************************************************************** */
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
+// /* ************************************************************************** */
+// /* 	                      STRUCTS 		        */
+// /*       T_ENV - Struct of environment (envp)                                 */
+// /*       T_SHELL - Contains list of environment end last exit status          */
+// /* ************************************************************************** */
+// typedef struct s_env
+// {
+// 	char			*key;
+// 	char			*value;
+// 	struct s_env	*next;
+// }	t_env;
 
-typedef struct s_shell
-{
-	t_env	*lst_env;
-	int		last_exit;
-	int		exit_flag;
-}	t_shell;
+// typedef struct s_shell
+// {
+// 	t_env	*lst_env;
+// 	t_ast	*root;
+// 	int		last_exit;
+// 	int		exit_flag;
+// }	t_shell;
+
+
 
 /* ************************************************************************** */
 /*          Function declarations and their respective .c files.              */

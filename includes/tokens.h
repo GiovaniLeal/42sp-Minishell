@@ -14,36 +14,36 @@
 # define TOKENS_H
 # define PROMPT "minishell$ "
 
-/* ************************************************************************** */
-/*         		      STRUCTS   	                      */
-/* T_TOKEN = Storages all comands in a list of tokens		        */
-/* T_STATE = For control of the literal quotes                                */
-/* T_TOKEN_TYPE = Types of comands tokens			        */
-/* ************************************************************************** */
+// /* ************************************************************************** */
+// /*         		      STRUCTS   	                      */
+// /* T_TOKEN = Storages all comands in a list of tokens		        */
+// /* T_STATE = For control of the literal quotes                                */
+// /* T_TOKEN_TYPE = Types of comands tokens			        */
+// /* ************************************************************************** */
 
-typedef enum e_state
-{
-	STATE_GENERAL,
-	STATE_IN_SQUOTE,
-	STATE_IN_DQUOTE
-}	t_state;
+// typedef enum e_state
+// {
+// 	STATE_GENERAL,
+// 	STATE_IN_SQUOTE,
+// 	STATE_IN_DQUOTE
+// }	t_state;
 
-typedef enum e_token_type
-{
-	T_WORD,
-	T_PIPE,
-	T_REDIR_IN,
-	T_REDIR_OUT,
-	T_APPEND,
-	T_HEREDOC
-}	t_token_type;
+// typedef enum e_token_type
+// {
+// 	T_WORD,
+// 	T_PIPE,
+// 	T_REDIR_IN,
+// 	T_REDIR_OUT,
+// 	T_APPEND,
+// 	T_HEREDOC
+// }	t_token_type;
 
-typedef struct s_token
-{
-	char				*value;
-	t_token_type		type;
-	struct s_token		*next;	
-}	t_token;
+// typedef struct s_token
+// {
+// 	char				*value;
+// 	t_token_type		type;
+// 	struct s_token		*next;	
+// }	t_token;
 
 /* ************************************************************************** */
 /*          Function declarations and their respective .c files.              */

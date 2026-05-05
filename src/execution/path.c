@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:23:11 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/05 09:18:41 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/05 14:20:11 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,21 +86,21 @@ void	handle_path_command(t_ast *node, t_shell *shell)
 	{
 		ft_putstr_fd("minishell: Is a directory\n", 2);
 		shell->last_exit = 126;
-		return ;
+		
 	}
 	else if (access(node->argv[0], F_OK) != 0)
 	{
 		ft_putstr_fd("minishell: No such file or directory\n", 2);
 		shell->last_exit = 127;
-		return ;
+		
 	}
 	else if (access(node->argv[0], X_OK) != 0)
 	{
 		ft_putstr_fd("minishell: Permission denied\n", 2);
 		shell->last_exit = 126;
-		return ;
+		
 	}
-	execute_child(node->argv[0], node->argv, shell->lst_env, shell);
+	execute_child(node->argv[0], node, shell->lst_env, shell);
 }
 
 

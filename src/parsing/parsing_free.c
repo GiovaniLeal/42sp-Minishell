@@ -47,23 +47,24 @@ void	free_ast(t_ast *node)
 	if (!node)
 		return ;
 
-	if (node->type == NODE_PIPE)
-	{
+	// 🔴 sempre desce na árvore
+	if (node->left)
 		free_ast(node->left);
+	if (node->right)
 		free_ast(node->right);
-	}
-	else if (node->type == NODE_CMD)
-	{
-		if (node->argv)
-		{
-			i = 0;
-			while (node->argv[i])
-				free(node->argv[i++]);
-			free(node->argv);
-		}
 
-		free_redirs(node->redirs);
+	// 🔴 sempre libera argv se existir
+	if (node->argv)
+	{
+		i = 0;
+		while (node->argv[i])
+			free(node->argv[i++]);
+		free(node->argv);
 	}
+
+	// 🔴 sempre libera redirections se existir
+	if (node->redirs)
+		free_redirs(node->redirs);
 
 	free(node);
 }

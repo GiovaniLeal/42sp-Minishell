@@ -27,7 +27,7 @@ static void	exec_pipe_left(int *pipefd, t_ast *node, t_shell *shell)
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[1]);
 	exec_ast_tree(node->left, shell);
-	free_ast(node);
+	free_ast(shell->root);
 	free_env_list(shell->lst_env);
 	exit(shell->last_exit);
 }
@@ -47,7 +47,7 @@ static void	exec_pipe_right(int *pipefd, t_ast *node, t_shell *shell)
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
 	exec_ast_tree(node->right, shell);
-	free_ast(node);
+	free_ast(shell->root);
 	free_env_list(shell->lst_env);
 	exit(shell->last_exit);
 }
@@ -90,12 +90,16 @@ int	exec_pipe(t_ast *node, t_shell *shell)
 	if (pid_left < 0)
 		return (close_pipes(pipefd));
 	if (pid_left == 0)
+	{
 		exec_pipe_left(pipefd, node, shell);
+	}
 	pid_right = fork();
 	if (pid_right < 0)
 		return (close_pipes(pipefd));
 	if (pid_right == 0)
+	{
 		exec_pipe_right(pipefd, node, shell);
+	}
 	close(pipefd[0]);
 	close(pipefd[1]);
 	waitpid(pid_left, NULL, 0);

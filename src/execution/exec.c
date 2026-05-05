@@ -6,29 +6,34 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/13 14:57:33 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/05 09:26:00 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/05 14:57:18 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-void	execute_child(char *path, char **argv, t_env *env, t_shell *shell)
+void	execute_child(char *path, t_ast *node, t_env *env, t_shell *shell)
 {
 	char	**envp;
 	int		saved_errno;
 
 	envp = env_to_array(env);
 	if (!envp)
+	{
+		free_ast(shell->root);
+		free_env_list(shell->lst_env);
 		exit(1);
-	execve(path, argv, envp);
+	}
+	execve(path, node->argv, envp);
 	saved_errno = errno;
-	//free(path);
 	free_env_array(envp);
 	if (saved_errno == EACCES || saved_errno == EISDIR)
 		shell->last_exit = 126;
 	else
 		shell->last_exit = 127;
+	free_ast(shell->root);
+	free_env_list(shell->lst_env);
 	exit (shell->last_exit);
 
 }
@@ -66,30 +71,29 @@ void	exec_simple(t_ast *node, t_shell *shell)
 			else
 			{
 				// existe e é executável, mas não está no PATH
-				execute_child(node->argv[0], node->argv, shell->lst_env, shell);
+				execute_child(node->argv[0], node, shell->lst_env, shell);
 			}
 		}
 		else
 		{
 			handle_path_not_found(node->argv[0], shell);
 		}
-
-		free_ast(node);
+		free_ast(shell->root);
 		free_env_list(shell->lst_env);
 		exit(shell->last_exit);
 	}
 	// 🔴 redirections
 	if (node->redirs && apply_redirections(node->redirs) < 0)
 	{
-		free_ast(node);
+		free_ast(shell->root);
 		free_env_list(shell->lst_env);
 		free(path_to_exec);
 		exit(1);
 	}
 	// 🔴 execve (não retorna se der certo)
-	execute_child(path_to_exec, node->argv, shell->lst_env, shell);
+	execute_child(path_to_exec, node, shell->lst_env, shell);
 	// 🔴 fallback (execve falhou)
-	free_ast(node);
+	free_ast(shell->root);
 	free_env_list(shell->lst_env);
 	exit(shell->last_exit);
 }

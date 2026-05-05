@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/05 09:15:04 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/05 15:01:06 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	exec_forked(t_ast *node, t_shell *shell)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		exec_simple(node, shell);
+		free_ast(shell->root);
+		free_env_list(shell->lst_env);
 		exit (shell->last_exit);
 	}
 	waitpid(pid, &status, 0);

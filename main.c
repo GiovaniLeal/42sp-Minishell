@@ -83,6 +83,7 @@ static int	process_cycle(t_shell *shell, char *input)
 	tree = process_input(input);
 	if (!tree)
 		return (0);
+	shell->root = tree;
 	if (apply_heredocs(tree) < 0)
 	{
 		free_ast(tree);
