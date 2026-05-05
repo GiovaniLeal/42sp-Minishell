@@ -42,11 +42,28 @@ void	free_redirs(t_redir *redir)
 
 void	free_ast(t_ast *node)
 {
+	int	i;
+
 	if (!node)
 		return ;
-	free_ast(node->left);
-	free_ast(node->right);
-	free_argv(node->argv);
-	free_redirs(node->redirs);
+
+	if (node->type == NODE_PIPE)
+	{
+		free_ast(node->left);
+		free_ast(node->right);
+	}
+	else if (node->type == NODE_CMD)
+	{
+		if (node->argv)
+		{
+			i = 0;
+			while (node->argv[i])
+				free(node->argv[i++]);
+			free(node->argv);
+		}
+
+		free_redirs(node->redirs);
+	}
+
 	free(node);
 }

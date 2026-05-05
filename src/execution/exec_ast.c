@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/25 14:00:29 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/04 19:51:00 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/05 09:15:04 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,19 @@ static int	exit_status(int status)
    - Restores shell signal handlers
    - Returns the normalized exit status
 */
+
+// if (is_directory(node->argv[0]) && !node->argv[1])
+// 	{
+// 		ft_putstr_fd("minishell: Is a directory\n", 2);
+// 		shell->last_exit = 126;
+// 		return (shell->last_exit);
+// 	}
 int	exec_forked(t_ast *node, t_shell *shell)
 {
 	pid_t	pid;
 	int		status;
 
-	if (is_directory(node->argv[0]) && !node->argv[1])
-	{
-		ft_putstr_fd(" Is a directory\n", 2);
-		shell->last_exit = 126;
-		return (shell->last_exit);
-	}
+	
 	pid = fork();
 	if (pid < 0)
 		return (-1);
@@ -64,7 +66,7 @@ int	exec_forked(t_ast *node, t_shell *shell)
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
 		exec_simple(node, shell);
-		return (shell->last_exit);
+		exit (shell->last_exit);
 	}
 	waitpid(pid, &status, 0);
 	setup_signals();
@@ -103,8 +105,7 @@ int	exec_ast_tree(t_ast *node, t_shell *shell)
 	}
 	signal(SIGINT, SIG_IGN);
 	signal(SIGQUIT, SIG_IGN);
-	result = its_builtin(node);
-	if (result == 1)
+	if (its_builtin(node))
 	{
 		result = exec_builtin_redirs(node, shell);
 		shell->last_exit = result;

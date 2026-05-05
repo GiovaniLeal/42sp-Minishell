@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:21:32 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/04 20:07:46 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/05 09:15:01 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 /* ************************************************************************** */
 
 // ---------------------------------------------------------- exec.c
-void	execute_child(char *path, char **argv, t_env *env);
+void	execute_child(char *path, char **argv, t_env *env, t_shell *shell);
 void	exec_simple(t_ast *node, t_shell *shell);
 
 // ---------------------------------------------------------- exec_ast.c
@@ -32,8 +32,8 @@ int		exec_pipe(t_ast *node, t_shell *shell);
 
 // ---------------------------------------------------------- path.c
 char	*find_in_path(char *cmd, t_shell * shell);
-int	handle_path_command(t_ast *node, t_shell *shell);
-void	handle_path_not_found(char *cmd);
+void	handle_path_command(t_ast *node, t_shell *shell);
+void	handle_path_not_found(char *cmd, t_shell *shell);
 char	*check_absolute_path(char *cmd, t_shell *shell);
 
 // ---------------------------------------------------------- redir.c
