@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-/* 	Libera memoria da lista de tokens 				*/
 void	free_token_list(t_token *token_list)
 {
 	t_token	*current_node;
@@ -27,7 +26,6 @@ void	free_token_list(t_token *token_list)
 	}
 }
 
-/* 		retorna ultimo nó da lista				*/
 t_token	*ft_lst_last_node(t_token *lst_tokens)
 {
 	if (!lst_tokens)
@@ -37,7 +35,6 @@ t_token	*ft_lst_last_node(t_token *lst_tokens)
 	return (lst_tokens);
 }
 
-/*	funcao responsável por adicionar novo nó de token da lista 	      */
 void	add_back_token_lst(t_token **lst_tokens, t_token *new_token)
 {
 	t_token	*last_node;

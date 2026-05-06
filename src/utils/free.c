@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 15:39:02 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/05 13:52:40 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/06 11:44:10 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,12 @@ void	free_split(char **array)
 	free(array);
 }
 
-void	clear_all(t_ast *node, t_shell *shell)
+void	clear_and_exit(t_shell *shell, int exit_status)
 {
-	free_ast(node);
-	free_env_list(shell->lst_env);
-	free(shell);
-
+	if (shell->root)
+		free_ast(shell->root);
+	if (shell->lst_env)
+		free_env_list(shell->lst_env);
+	if (exit_status >= 0)
+		exit(exit_status);
 }
-

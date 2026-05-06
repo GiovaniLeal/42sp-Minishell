@@ -13,14 +13,13 @@
 #ifndef SIGNALS_H
 # define SIGNALS_H
 
-# include "minishell.h"
+/* ************************************************************************** */
+//*                          Path = /SRC/EXECUTION                            */
+/*         - Function declarations and their respective .c files -            */
+/* ************************************************************************** */
+// * signals.c
 
-/* ************************************************************************** */
-/*          Function declarations and their respective .c files.              */
-/* ************************************************************************** */
-// ---------------------------------------------------------- signals.c
 int		get_signal(void);
 void	reset_signal(void);
 void	setup_signals(void);
-
 #endif

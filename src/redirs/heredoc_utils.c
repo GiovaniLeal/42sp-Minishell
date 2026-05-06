@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/04/04 15:16:32 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/04 11:23:55 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/06 15:23:37 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,6 @@ static int	apply_heredocs_pipe(t_ast *node)
 	return (0);
 }
 
-/* Identifica o uso de heredocs e atribui o file temporário a ser criado ao 
-fd de t_redir
-*/
 int	apply_heredocs(t_ast *node)
 {
 	t_redir	*tmp;

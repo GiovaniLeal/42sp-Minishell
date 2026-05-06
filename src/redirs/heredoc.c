@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:34:03 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/10 15:02:39 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/05/06 15:38:23 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* vai apenas gerar um nome único para cada arquivo temporário do heredoc*/
 static char	*generate_heredoc_name(void)
 {
 	static int	index;
@@ -26,9 +25,6 @@ static char	*generate_heredoc_name(void)
 	return (name);
 }
 
-/* vai popular o arquivo temporário linha por linha, até o delimiter ser 
-encontrado, pra depois heredoc poder reabrir esse arquivo em modo leitura
-*/
 static int	write_line(int fd, char *line, char *filename)
 {
 	if (write(fd, line, ft_strlen(line)) == -1 || write(fd, "\n", 1) == -1)
@@ -65,8 +61,6 @@ static	int	heredoc_loop(int fd, char *delimiter, char *filename)
 	return (0);
 }
 
-/* 
-*/
 int	heredoc(char *delimiter)
 {
 	int		fd_write;

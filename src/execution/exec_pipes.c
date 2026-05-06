@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-/* Executes the left side of a pipe in a child process.
+/* Executes the side of a pipe in a child process.
 
    - Closes the read end of the pipe (unused)
    - Redirects STDOUT to the pipe's write end using dup2
@@ -27,34 +27,18 @@ static void	exec_pipe_left(int *pipefd, t_ast *node, t_shell *shell)
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[1]);
 	exec_ast_tree(node->left, shell);
-	free_ast(shell->root);
-	free_env_list(shell->lst_env);
-	exit(shell->last_exit);
+	clear_and_exit(shell, shell->last_exit);
 }
 
-/* Executes the right side of a pipe in a child process.
-
-   - Closes the write end of the pipe (unused)
-   - Redirects STDIN to the pipe's read end using dup2
-   - Executes the right AST subtree
-   - Frees allocated resources before exiting
-
-   After dup2, stdin will read data coming from the pipe
-*/
 static void	exec_pipe_right(int *pipefd, t_ast *node, t_shell *shell)
 {
 	close(pipefd[1]);
 	dup2(pipefd[0], STDIN_FILENO);
 	close(pipefd[0]);
 	exec_ast_tree(node->right, shell);
-	free_ast(shell->root);
-	free_env_list(shell->lst_env);
-	exit(shell->last_exit);
+	clear_and_exit(shell, shell->last_exit);
 }
 
-/* Closes both ends of the pipe and returns an error code.
-   Used to properly clean up file descriptors when fork fails
-*/
 static int	close_pipes(int *pipefd)
 {
 	close(pipefd[0]);
@@ -90,16 +74,12 @@ int	exec_pipe(t_ast *node, t_shell *shell)
 	if (pid_left < 0)
 		return (close_pipes(pipefd));
 	if (pid_left == 0)
-	{
 		exec_pipe_left(pipefd, node, shell);
-	}
 	pid_right = fork();
 	if (pid_right < 0)
 		return (close_pipes(pipefd));
 	if (pid_right == 0)
-	{
 		exec_pipe_right(pipefd, node, shell);
-	}
 	close(pipefd[0]);
 	close(pipefd[1]);
 	waitpid(pid_left, NULL, 0);

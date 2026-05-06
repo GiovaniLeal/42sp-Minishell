@@ -12,14 +12,12 @@
 
 #include "minishell.h"
 
-/*	Verifica se o token possui redirecionamentos 	                  */
 int	is_redir(t_token_type type)
 {
 	return (type == T_REDIR_IN || type == T_REDIR_OUT
 		|| type == T_APPEND || type == T_HEREDOC);
 }
 
-/*	Adiciona nó de comando usando a struct t_ast(arvore sintática)     */
 t_ast	*new_cmd_node(void)
 {
 	t_ast	*node;
@@ -35,7 +33,6 @@ t_ast	*new_cmd_node(void)
 	return (node);
 }
 
-/* Criar nó de PIPE usando a struct t_ast (arvore sintática)	     */
 t_ast	*new_pipe_node(t_ast *left, t_ast *right)
 {
 	t_ast	*node;
@@ -51,10 +48,6 @@ t_ast	*new_pipe_node(t_ast *left, t_ast *right)
 	return (node);
 }
 
-/* 
-** Cria um novo vetor argv maior, copia os argumentos existentes,
-** adiciona o novo valor no final e atualiza cmd_node->argv.
-*/
 int	add_new_arg(t_ast *cmd_node, char *value)
 {
 	int		i;

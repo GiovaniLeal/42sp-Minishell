@@ -12,8 +12,7 @@
 
 #include "minishell.h"
 
-/* Percorre a str de token e retorna uma nova string com a expansão correta*/
-char *expand_tokens(char *str, t_shell *shell)
+char	*expand_tokens(char *str, t_shell *shell)
 {
 	int		i;
 	int		state;
@@ -22,54 +21,21 @@ char *expand_tokens(char *str, t_shell *shell)
 	i = 0;
 	state = STATE_GENERAL;
 	result = ft_strdup("");
-
 	while (str[i])
 	{
-		// SINGLE QUOTE
-		if (str[i] == '\'' && state != STATE_IN_DQUOTE)
-		{
-			state = (state == STATE_IN_SQUOTE) ? STATE_GENERAL : STATE_IN_SQUOTE;
-			i++; // remove a aspa estrutural
-			continue;
-		}
-
-		// DOUBLE QUOTE
-		if (str[i] == '"' && state != STATE_IN_SQUOTE)
-		{
-			state = (state == STATE_IN_DQUOTE) ? STATE_GENERAL : STATE_IN_DQUOTE;
-			i++; // remove a aspa estrutural
-			continue;
-		}
-
-		// EXPANSÃO
+		if (update_state_quote(&state, str, &i))
+			continue ;
 		if (str[i] == '$' && state != STATE_IN_SQUOTE)
 		{
 			result = handle_dollar(result, str, &i, shell);
-			continue;
+			continue ;
 		}
-
-		// CARACTERE NORMAL (inclui aspas "inofensivas")
 		result = append_char(result, str[i]);
 		i++;
 	}
 	return (result);
 }
 
-void	expand_redirs(t_redir	*redirs, t_shell *shell)
-{
-	char	*new_file;
-
-	while (redirs)
-	{
-		new_file = expand_tokens(redirs->file, shell);
-		free(redirs->file);
-		redirs->file = new_file;
-		redirs = redirs->next;
-	}
-}
-
-/*Percorre o array, chama funcao que expande o token da string e realoca 
-a string do array*/
 void	expand_command(char **array, t_shell *shell)
 {
 	int		i;
@@ -97,17 +63,67 @@ void	expand_command(char **array, t_shell *shell)
 	array[j] = NULL;
 }
 
-//Percorre a arvore e chama funcao de expansão 
-// caso o nó seja de comando
 void	expand_ast(t_ast *node, t_shell *shell)
 {
+	char	*new_file;
+	t_redir	*tmp;
+
 	if (!node)
 		return ;
 	if (node->type == NODE_CMD)
 	{
 		expand_command(node->argv, shell);
-		expand_redirs(node->redirs, shell);
+		tmp = node->redirs;
+		while (tmp)
+		{
+			new_file = expand_tokens(tmp->file, shell);
+			free(tmp->file);
+			tmp->file = new_file;
+			tmp = tmp->next;
+		}
 	}
 	expand_ast(node->left, shell);
 	expand_ast(node->right, shell);
+}
+
+int	update_state_quote(int *state, char *str, int *i)
+{
+	if (str[*i] == '\'' && (*state) != STATE_IN_DQUOTE)
+	{
+		if ((*state) == STATE_IN_SQUOTE)
+			(*state) = STATE_GENERAL;
+		else
+			(*state) = STATE_IN_SQUOTE;
+		(*i)++;
+		return (1);
+	}
+	else if (str[*i] == '"' && (*state) != STATE_IN_SQUOTE)
+	{
+		if ((*state) == STATE_IN_DQUOTE)
+			(*state) = STATE_GENERAL;
+		else
+			(*state) = STATE_IN_DQUOTE;
+		(*i)++;
+		return (1);
+	}
+	return (0);
+}
+
+int	change_quote_status(int state, char c)
+{
+	if (c == '\'' && state != STATE_IN_DQUOTE)
+	{
+		if (state == STATE_IN_SQUOTE)
+			return (STATE_GENERAL);
+		else
+			return (STATE_IN_SQUOTE);
+	}
+	if (c == '\"' && state != STATE_IN_SQUOTE)
+	{
+		if (state == STATE_IN_DQUOTE)
+			return (STATE_GENERAL);
+		else
+			return (STATE_IN_DQUOTE);
+	}
+	return (state);
 }

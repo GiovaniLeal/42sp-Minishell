@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-/* Helper function that frees all memory associated with an env node */
 void	free_env_list(t_env *env_lst)
 {
 	t_env	*temp;
@@ -27,7 +26,6 @@ void	free_env_list(t_env *env_lst)
 	}
 }
 
-/* Adds a new node to the environment list in input order */
 void	add_environment(t_env **lst, t_env *node)
 {
 	t_env	*temp;
@@ -45,7 +43,6 @@ void	add_environment(t_env **lst, t_env *node)
 	temp->next = node;
 }
 
-/* Creates a new environment node and parses the given string */
 t_env	*create_environment(char *str)
 {
 	int		index;
@@ -75,8 +72,6 @@ t_env	*create_environment(char *str)
 	return (new_node);
 }
 
-/* Iterates through the envp array and calls the functions responsible
-   for creating the environment list */
 t_env	*add_env(char **envp)
 {
 	int		i;

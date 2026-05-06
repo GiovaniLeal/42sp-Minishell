@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-/* Atribui tipo T_WORD E retorna o tamanho da str. Verifica o status de aspas 
-simples e duplas e caso nao seja fechado corretamente retorna -1*/
 static int	read_word(t_token_type *type, char *str)
 {
 	int		len;
@@ -41,8 +39,6 @@ static int	read_word(t_token_type *type, char *str)
 	return (len);
 }
 
-/*    Atribui a o o type do nó correspondente e retorna o tamanho da str a 
-ser armazenada em value   */
 static int	get_token_type_and_len(t_token_type *node_type, char *str)
 {
 	if (str[0] == '>' && str[1] == '>')
@@ -82,7 +78,6 @@ static t_token	*create_token(char *str, int *len)
 	return (token);
 }
 
-/* Cria e retorna lista com tokens(comandos) digitados pelo usuário */
 t_token	*lexer(char *str)
 {
 	t_token	*lst_tokens;

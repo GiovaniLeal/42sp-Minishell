@@ -14,7 +14,7 @@
 # define MINISHELL_H
 
 /* ************************************************************************** */
-/*                             STANDART LIBRARIES                             */
+//*                             STANDART LIBRARIES                            */
 /* ************************************************************************** */
 # include <sys/types.h>
 # include <sys/wait.h>
@@ -28,94 +28,12 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-
-
 /* ************************************************************************** */
-/*         		      STRUCTS   	                      */
-/* T_TOKEN = Storages all comands in a list of tokens		        */
-/* T_STATE = For control of the literal quotes                                */
-/* T_TOKEN_TYPE = Types of comands tokens			        */
-/* ************************************************************************** */
-
-typedef enum e_state
-{
-	STATE_GENERAL,
-	STATE_IN_SQUOTE,
-	STATE_IN_DQUOTE
-}	t_state;
-
-typedef enum e_token_type
-{
-	T_WORD,
-	T_PIPE,
-	T_REDIR_IN,
-	T_REDIR_OUT,
-	T_APPEND,
-	T_HEREDOC
-}	t_token_type;
-
-typedef struct s_token
-{
-	char				*value;
-	t_token_type		type;
-	struct s_token		*next;	
-}	t_token;
-
-/* ************************************************************************** */
-/*         		      STRUCTS   	                      */
-/* T_AST = If the node is CMD use the argv and redirs                         */
-/* T_REDIR = For redirections comand control                                  */
-/* T_PARSING_TYPE = For control the type of node (PIPE OR CMD)                */
-/* ************************************************************************** */
-
-typedef enum e_parsing_type
-{
-	NODE_CMD,
-	NODE_PIPE
-}	t_parsing_type;
-
-typedef struct s_redir
-{
-	t_token_type	type;
-	char			*file;
-	int				heredoc_fd;
-	struct s_redir	*next;
-}	t_redir;
-
-typedef struct s_ast
-{
-	t_parsing_type	type;
-	struct s_ast	*left;
-	struct s_ast	*right;
-	char			**argv;
-	t_redir			*redirs;
-}	t_ast;
-
-/* ************************************************************************** */
-/* 	                      STRUCTS 		        */
-/*       T_ENV - Struct of environment (envp)                                 */
-/*       T_SHELL - Contains list of environment end last exit status          */
-/* ************************************************************************** */
-typedef struct s_env
-{
-	char			*key;
-	char			*value;
-	struct s_env	*next;
-}	t_env;
-
-typedef struct s_shell
-{
-	t_env	*lst_env;
-	t_ast	*root;
-	int		last_exit;
-	int		exit_flag;
-}	t_shell;
-
-/* ************************************************************************** */
-/*                          DEFINED HEADERS                                   */
+//*                          DEFINED HEADERS                                  */
 /* ************************************************************************** */
 # include "libft.h"
 # include "ft_printf.h"
+# include "structures.h"
 # include "environment.h"
 # include "tokens.h"
 # include "parsing.h"
@@ -125,16 +43,17 @@ typedef struct s_shell
 # include "signals.h"
 # include "builtins.h"
 
-
 /* ************************************************************************** */
-/*          Function declarations and their respective .c files.              */
+//*                          Path = /SRC/UTILS                                */
+/*         - Function declarations and their respective .c files -            */
 /* ************************************************************************** */
+// * error.c
+int				error_msg(char *cmd, char *detail, char *msg, int error_nbr);
 
-// ------------------------------------------------- utils.c
-void	free_split(char **array);
-int		error_msg(char *cmd, char *detail, char *msg, int error_nbr);
-long	ft_atol_safe(const char *nptr, int *error);
+// * free.c
+void			clear_and_exit(t_shell *shell, int exit_status);
+void			free_split(char **array);
 
-// FUNCAO TESTES!
-void	clear_all(t_ast *node, t_shell *shell);
+// * ft_atol_safe.c
+long			ft_atol_safe(const char *nptr, int *error);
 #endif

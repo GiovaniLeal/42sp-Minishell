@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/16 14:54:06 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/28 17:35:26 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/06 16:24:09 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 int			ft_exit(char **argv, t_shell *shell);
 static int	no_numeric_status(t_shell *shell, char **argv);
 static int	no_exit_status(t_shell *shell);
-int			is_numeric(char	*str);
+static int	is_numeric(char	*str);
 
 /* ************************************************************************** */
 /*                 Executes the 'exit' built-in command:                      */
@@ -70,7 +70,7 @@ static int	no_exit_status(t_shell *shell)
 	return (shell->last_exit);
 }
 
-int	is_numeric(char	*str)
+static int	is_numeric(char	*str)
 {
 	int	i;
 

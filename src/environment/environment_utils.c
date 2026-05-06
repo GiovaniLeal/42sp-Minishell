@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-/* Joins three strings */
 char	*str_join_three(char *key, char c, char *value)
 {
 	int		i;
@@ -53,7 +52,6 @@ void	free_env_array(char **env)
 	free(env);
 }
 
-/* Counts the number of nodes in the list */
 int	env_size(t_env *lst_env)
 {
 	int	count;
@@ -67,7 +65,6 @@ int	env_size(t_env *lst_env)
 	return (count);
 }
 
-/* Creates an array from the environment list.*/
 char	**env_to_array(t_env *env)
 {
 	int		i;
@@ -94,7 +91,6 @@ char	**env_to_array(t_env *env)
 	return (array);
 }
 
-/* Searches for a variable in the environment list */
 char	*get_environment(t_env *env, char *key)
 {
 	while (env)

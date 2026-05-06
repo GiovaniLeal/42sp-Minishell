@@ -3,21 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   redir.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/20 15:21:10 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/04/15 15:48:48 by anunes-o         ###   ########.fr       */
+/*   Updated: 2026/05/06 15:38:31 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-/* vai retornar qual o fd(arquivo) a ser usado e quais serão 
-as permissões do arquivo de acordo com o sinal usado:
 
-(redirecionamento de entrada) < - somente leitura
-(truncate) > - cria o arquivo, escreve nele, apaga o que ja tinha
-(append) >> - cria o arquivo, escreve nele, mantem o que ja tinha
-*/
 static int	open_redir(t_redir *redir)
 {
 	int	fd;
