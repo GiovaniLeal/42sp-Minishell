@@ -11,7 +11,7 @@
 # **************************************************************************** #
 NAME        := minishell
 CC          := cc
-CFLAGS      := -Wall -Wextra -Werror -g3
+CFLAGS      := -Wall -Wextra -Werror -gcc
 
 INC_DIR     := includes
 LEXER_DIR   := lexer
