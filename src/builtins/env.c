@@ -33,7 +33,7 @@ int	exec_env(char **argv, t_env *env)
 	}
 	while (env)
 	{
-		if (env->value)
+		if (ft_strcmp(env->value, "") != 0)
 		{
 			key_plus_path = str_join_three(env->key, '=', env->value);
 			if (key_plus_path)
