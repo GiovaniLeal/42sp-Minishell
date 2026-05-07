@@ -44,6 +44,12 @@
 # include "builtins.h"
 
 /* ************************************************************************** */
+/* 		Global Variable                                   */
+/*      usage : The global variable used strictly for signal handling.        */
+/* ************************************************************************** */
+extern volatile int		g_signal;
+
+/* ************************************************************************** */
 //*                          Path = /SRC/UTILS                                */
 /*         - Function declarations and their respective .c files -            */
 /* ************************************************************************** */
