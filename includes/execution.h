@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:21:32 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/06 16:03:26 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/07 12:49:50 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*check_absolute_path(char *cmd, t_shell *shell);
 char	*search_in_dir(char	**dirs, char *cmd);
 char	*find_in_path(char *cmd, t_shell *shell);
 void	handle_path_command(t_ast *node, t_shell *shell);
+char	*get_env_path(t_shell *shell, char *cmd);
 
 /* ************************************************************************** */
 //*                          Path = /SRC/REDIR                                */

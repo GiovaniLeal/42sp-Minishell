@@ -6,7 +6,7 @@
 /*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 14:23:11 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/06 15:21:31 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/07 12:49:43 by giodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,20 @@ char	*search_in_dir(char	**dirs, char *cmd)
 	return (NULL);
 }
 
+char	*get_env_path(t_shell *shell, char *cmd)
+{
+	t_env	*env;
+
+	env = shell->lst_env;
+	while (env)
+	{
+		if (ft_strcmp(cmd, env->key) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
+
 char	*find_in_path(char *cmd, t_shell *shell)
 {
 	char	*path;
@@ -64,7 +78,7 @@ char	*find_in_path(char *cmd, t_shell *shell)
 	char	*result;
 
 	(void)shell;
-	path = getenv("PATH");
+	path = get_env_path(shell, "PATH");
 	if (!path)
 		return (NULL);
 	dirs = ft_split(path, ':');
