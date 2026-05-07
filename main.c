@@ -51,12 +51,12 @@ void	start_shell(t_shell *shell)
 
 	while (1)
 	{
-		input = readline(PROMPT);
 		if (get_signal())
 		{
 			shell->last_exit = get_signal();
 			reset_signal();
 		}
+		input = readline(PROMPT);
 		if (!input)
 			break ;
 		if (*input)
@@ -86,6 +86,8 @@ static int	process_cycle(t_shell *shell, char *input)
 	shell->root = tree;
 	if (apply_heredocs(tree) < 0)
 	{
+		if (get_signal() == 130)
+			shell->last_exit = 130;
 		free_ast(tree);
 		return (0);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: giodos-s <giodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: anunes-o <anunes-o@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/03/11 14:34:03 by anunes-o          #+#    #+#             */
-/*   Updated: 2026/05/06 15:38:23 by giodos-s         ###   ########.fr       */
+/*   Updated: 2026/05/07 14:50:16 by anunes-o         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ static	int	heredoc_loop(int fd, char *delimiter, char *filename)
 		line = readline("> ");
 		if (get_signal() == 130)
 		{
-			reset_signal();
 			return (close_fd(fd, line, filename));
 		}
 		if (!line)
@@ -63,16 +62,21 @@ static	int	heredoc_loop(int fd, char *delimiter, char *filename)
 
 int	heredoc(char *delimiter)
 {
-	int		fd_write;
-	int		fd_read;
-	char	*filename;
+	int					fd_write;
+	int					fd_read;
+	char				*filename;
 
+	signal(SIGINT, handle_sigint_heredoc);
 	filename = generate_heredoc_name();
 	fd_write = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd_write < 0)
 		return (-1);
 	if (heredoc_loop(fd_write, delimiter, filename) < 0)
+	{
+		signal(SIGINT, handle_sigint);
 		return (-1);
+	}
+	signal(SIGINT, handle_sigint);
 	close(fd_write);
 	fd_read = open(filename, O_RDONLY);
 	unlink(filename);

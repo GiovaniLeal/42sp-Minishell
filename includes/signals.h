@@ -22,4 +22,7 @@
 int		get_signal(void);
 void	reset_signal(void);
 void	setup_signals(void);
+void	handle_sigint(int sig);
+void	handle_sigint_heredoc(int sig);
+
 #endif

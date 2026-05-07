@@ -12,7 +12,6 @@
 NAME        := minishell
 CC          := cc
 CFLAGS      := -Wall -Wextra -Werror -g3
-
 INC_DIR     := includes
 LEXER_DIR   := lexer
 PARSING_DIR := parsing

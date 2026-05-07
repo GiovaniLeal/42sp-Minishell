@@ -42,17 +42,23 @@ void	reset_signal(void)
 /* 3. Resets the readline internal state and buffer to display a clean        */
 /* prompt on a new line without exiting the shell.                            */
 /* ************************************************************************** */
-static void	handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
 	ssize_t	re;
 
 	(void)sig;
-	g_signal = 130;
 	re = write(1, "\n", 1);
 	(void)re;
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+}
+
+void	handle_sigint_heredoc(int sig)
+{
+	(void)sig;
+	g_signal = 130;
+	ioctl(0, TIOCSTI, "\n");
 }
 
 /* ************************************************************************** */

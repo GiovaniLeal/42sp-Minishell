@@ -27,6 +27,7 @@
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/ioctl.h>
 
 /* ************************************************************************** */
 //*                          DEFINED HEADERS                                  */
